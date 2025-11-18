@@ -2,26 +2,284 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   BLUE THEME CSS VARIABLES
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+
+  --header-bg: #ffffff; /* default background */
+  --header-bg-scrolled: #f8f9fa; /* on scroll */
+  --btn-bg: #2563eb; /* button color */
+  --btn-bg-scrolled: #1e40af; /* button when scrolled */
+
+  /* ===== PRIMARY BLUE COLORS ===== */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #0066CC;
+  --primary-600: #0052a3;
+  --primary-700: #004080;
+  --primary-800: #003366;
+  --primary-900: #002952;
+  --primary-950: #001a33;
+  
+  --primary: #0066CC;
+  --primary-dark: #003366;
+  --primary-light: #60a5fa;
+  --primary-foreground: #ffffff;
+
+  --secondary: #0ea5e9;
+  --accent: #f97316;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 213 94% 40%;
+  --radius: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* FORCE REMOVE ALL SPACING */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Remove all default margins */
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* TYPOGRAPHY COMPONENTS */
+@layer components {
+  .h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight;
+  }
+
+  .h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight;
+  }
+
+  .h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-snug;
+  }
+
+  .h4 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 leading-snug;
+  }
+
+  .h5 {
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-gray-700 leading-normal;
+  }
+
+  .h6 {
+    @apply text-base md:text-lg lg:text-xl font-semibold text-gray-700 leading-normal;
+  }
+
+  .p-large {
+    @apply text-lg md:text-xl text-gray-600 leading-relaxed;
+  }
+
+  .p-base {
+    @apply text-base md:text-lg text-gray-600 leading-relaxed;
+  }
+
+  .p-small {
+    @apply text-sm md:text-base text-gray-500 leading-normal;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-primary-lg {
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-gradient {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 hover:from-primary-600 hover:via-primary-700 hover:to-primary-800 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl p-6 border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply bg-white rounded-2xl p-6 border border-gray-200 hover:border-primary-300 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold;
+  }
+
+  .section {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-dark {
+    @apply py-16 md:py-20 lg:py-24 bg-gray-900 text-white;
+  }
+
+  .section-blue {
+    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 text-white;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+
+  .bg-primary-gradient {
+    @apply bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800;
+  }
+
+  .bg-blue-soft {
+    @apply bg-gradient-to-br from-blue-50 via-white to-blue-100;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent;
   }
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+@layer components {
+  .header-bg {
+    @apply bg-transparent; /* No background when at top */
+  }
+  .header-bg-scrolled {
+    @apply bg-white; /* White background on scroll */
+  }
+
+  /* Main navigation link styles */
+  .nav-link {
+    @apply relative text-gray-700 font-semibold transition-colors duration-300 hover:text-primary-500 py-2;
+  }
+
+  /* Underline effect for links without dropdown */
+  .nav-link-underline {
+    @apply absolute bottom-0 left-0 h-0.5 bg-primary-500 w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
+  }
+  
+  /* Dropdown container */
+  .nav-dropdown {
+    @apply mt-2 bg-white rounded-xl shadow-lg border border-gray-200;
+  }
+  
+  /* Individual dropdown item */
+  .nav-dropdown-item {
+    @apply block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200;
+  }
+
+  /* Custom 'Get Started' button style */
+  .btn-primary-custom {
+    @apply bg-primary-500 hover:bg-primary-600 font-bold;
+  }
+
+  @layer components {
+  /* --- NAVBAR STYLES --- */
+  
+  /* Scroll behavior */
+  .header-bg {
+    @apply bg-transparent;
+  }
+  .header-bg-scrolled {
+    @apply bg-white; 
+  }
+
+  /* Logo */
+  .logo-icon-wrapper {
+    @apply w-11 h-11 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg;
+  }
+  .logo-text {
+    @apply text-white font-black text-xl;
+  }
+  .logo-main-text {
+    @apply text-gray-800; /* Uses Tailwind's default gray */
+  }
+
+  /* Desktop Navigation link styles */
+  .nav-link {
+    @apply relative text-gray-700 font-semibold transition-colors duration-300 hover:text-primary-500 py-2;
+  }
+  .nav-link-underline {
+    @apply absolute bottom-0 left-0 h-0.5 bg-primary-500 w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
+  }
+  
+  /* Desktop Dropdown container */
+  .nav-dropdown {
+    @apply mt-2 bg-white rounded-xl shadow-lg border border-gray-200;
+  }
+  /* Desktop Dropdown item */
+  .nav-dropdown-item {
+    @apply block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200;
+  }
+
+  /* Mobile Navigation link styles */
+  .nav-link-mobile {
+    @apply text-gray-700 hover:bg-primary-50 hover:text-primary-600;
+  }
+  .nav-sublink-mobile {
+    @apply text-gray-600 hover:bg-gray-100;
+  }
+}
+}
+
