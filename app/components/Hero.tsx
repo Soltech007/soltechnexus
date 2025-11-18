@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+  import { Award, ShieldCheck, Cloud } from "lucide-react";
 
 const HeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -12,7 +13,7 @@ const HeroSlider = () => {
   
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1920&h=1080&fit=crop&q=80",
+      image: "/hero.jpg",
       title: "CCTV & Surveillance",
       highlight: "Security Systems",
       subtitle: "Advanced monitoring solutions with PeopleLink, BenQ, and Panasonic for complete security coverage",
@@ -22,7 +23,7 @@ const HeroSlider = () => {
     },
       {
       id: 1,
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&h=1080&fit=crop&q=80",
+      image: "/hero1.jpg",
       title: "IT Infrastructure",
       highlight: "Solutions",
       subtitle: "Transforming businesses with cutting-edge networking, cloud services, and cybersecurity solutions",
@@ -32,7 +33,7 @@ const HeroSlider = () => {
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&h=1080&fit=crop&q=80",
+      image: "/hero3.jpg",
       title: "Cloud Migration",
       highlight: "AWS | Azure | Microsoft 365",
       subtitle: "Seamless cloud transformation with enterprise-grade security and scalability",
@@ -42,7 +43,7 @@ const HeroSlider = () => {
     },
     {
       id: 4,
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&h=1080&fit=crop&q=80",
+      image: "/hero4.jpg",
       title: "Network Security",
       highlight: "& Cybersecurity",
       subtitle: "Dell & Cisco powered firewalls, routers, and security appliances for enterprise protection",
@@ -52,7 +53,7 @@ const HeroSlider = () => {
     },
     {
       id: 5,
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&h=1080&fit=crop&q=80",
+      image: "/hero5.jpg",
       title: "IT Consultancy",
       highlight: "& Support",
       subtitle: "Expert guidance, AMC services, and 24/7 technical support for seamless operations",
@@ -185,7 +186,7 @@ const HeroSlider = () => {
                 >
                   <Link
                     href={slides[currentSlide].buttonLink}
-                    className="group relative bg-white text-black px-8 py-4 rounded-full text-base lg:text-lg font-bold hover:text-white transition-all duration-500 shadow-2xl flex items-center justify-center gap-3 overflow-hidden hover:scale-105"
+                    className="group relative bg-white text-black px-8 py-4 rounded-full text-base lg:text-lg font-bold  transition-all duration-500 shadow-2xl flex items-center justify-center gap-3 overflow-hidden hover:scale-105"
                   >
                     <span className="relative z-10">{slides[currentSlide].buttonText}</span>
                     <motion.span 
@@ -195,7 +196,6 @@ const HeroSlider = () => {
                     >
                       →
                     </motion.span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary-light to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </Link>
 
                   <Link
@@ -207,29 +207,50 @@ const HeroSlider = () => {
                 </motion.div>
 
                 {/* Features */}
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                  className="flex flex-wrap gap-3 pt-2"
-                >
-                  {[
-                    { icon: "🏆", text: "Dell Certified" },
-                    { icon: "🔒", text: "Cisco Partner" },
-                    { icon: "☁️", text: "Microsoft Partner" },
-                  ].map((feature, index) => (
-                    <motion.span
-                      key={index}
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 1.1 + index * 0.1, type: "spring" }}
-                      className="flex items-center gap-2 text-white/95 text-sm lg:text-base font-semibold bg-white/10 backdrop-blur-lg px-5 py-2.5 rounded-full border border-white/30 hover:bg-white/20 hover:border-white/50 hover:scale-110 transition-all cursor-default shadow-lg"
-                    >
-                      <span className="text-xl">{feature.icon}</span>
-                      <span>{feature.text}</span>
-                    </motion.span>
-                  ))}
-                </motion.div>
+            
+
+<motion.div
+  initial={{ y: 30, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ delay: 1, duration: 0.8 }}
+  className="flex flex-wrap gap-4 pt-2"
+>
+  {[
+    { icon: <Award className="w-5 h-5 text-primary-300" />, text: "Dell Certified" },
+    { icon: <ShieldCheck className="w-5 h-5 text-primary-300" />, text: "Cisco Partner" },
+    { icon: <Cloud className="w-5 h-5 text-primary-300" />, text: "Microsoft Partner" },
+  ].map((feature, index) => (
+    <motion.div
+      key={index}
+      initial={{ scale: 0.5, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1.1 + index * 0.15, type: "spring", stiffness: 120 }}
+      className="
+        flex items-center gap-2 
+        bg-white/10 backdrop-blur-xl 
+        px-5 py-2.5 
+        rounded-2xl 
+        border border-white/20 
+        shadow-[0_2px_10px_rgba(255,255,255,0.12)]
+        hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)]
+        hover:bg-white/20 
+        hover:border-white/40 
+        hover:scale-110 
+        transition-all duration-300 
+        cursor-default
+      "
+    >
+      <span className="text-xl drop-shadow">
+        {feature.icon}
+      </span>
+
+      <span className="text-white/95 text-sm md:text-base font-semibold tracking-wide">
+        {feature.text}
+      </span>
+    </motion.div>
+  ))}
+</motion.div>
+
               </motion.div>
             </div>
           </div>
