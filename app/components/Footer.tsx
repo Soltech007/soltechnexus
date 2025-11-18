@@ -332,7 +332,7 @@ export default function Footer() {
                 ))}
               </ul>
             </motion.div>
-
+ 
             {/* Resources & Contact */}
         <motion.div
   initial={{ opacity: 0, y: 20 }}
