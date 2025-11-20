@@ -1,19 +1,19 @@
-'use client';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { 
-  FaPhone, 
-  FaEnvelope, 
-  FaMapMarkerAlt, 
-  FaLinkedin, 
-  FaTwitter, 
+"use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import {
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaLinkedin,
+  FaTwitter,
   FaFacebook,
   FaInstagram,
-  FaYoutube
-} from 'react-icons/fa';
-import { 
-  ChevronRight, 
-  Send, 
+  FaYoutube,
+} from "react-icons/fa";
+import {
+  ChevronRight,
+  Send,
   Award,
   Clock,
   Shield,
@@ -26,13 +26,13 @@ import {
   Landmark,
   Server,
   Globe,
-  Contact
-} from 'lucide-react';
-import { useState } from 'react';
-import React from 'react';
+  Contact,
+} from "lucide-react";
+import { useState } from "react";
+import React from "react";
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -40,58 +40,61 @@ export default function Footer() {
     setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {
-      alert('Thank you for subscribing!');
-      setEmail('');
+      alert("Thank you for subscribing!");
+      setEmail("");
       setIsSubmitting(false);
     }, 1000);
   };
 
   const productLinks = [
-    { href: '/products/cctv-surveillance', label: 'CCTV & Surveillance' },
-    { href: '/products/networking-devices', label: 'Networking Devices' },
-    { href: '/products/servers-storage', label: 'Servers & Storage' },
-    { href: '/products/firewalls-security', label: 'Firewalls & Security' },
-    { href: '/products/collaboration-tools', label: 'Collaboration Tools' },
-    { href: '/products/cybersecurity-software', label: 'Cybersecurity Software' },
+    { href: "/products/cctv-surveillance", label: "CCTV & Surveillance" },
+    { href: "/products/networking-devices", label: "Networking Devices" },
+    { href: "/products/servers-storage", label: "Servers & Storage" },
+    { href: "/products/firewalls-security", label: "Firewalls & Security" },
+    { href: "/products/collaboration-tools", label: "Collaboration Tools" },
+    {
+      href: "/products/cybersecurity-software",
+      label: "Cybersecurity Software",
+    },
   ];
 
   const serviceLinks = [
-    { href: '/services/enterprise-networking', label: 'Enterprise Networking' },
-    { href: '/services/it-consulting', label: 'IT Consulting' },
-    { href: '/services/cloud-migration', label: 'Cloud Services & Migration' },
-    { href: '/services/cybersecurity', label: 'Cybersecurity Solutions' },
-    { href: '/services/amc-support', label: 'AMC & Support' },
+    { href: "/services/enterprise-networking", label: "Enterprise Networking" },
+    { href: "/services/it-consulting", label: "IT Consulting" },
+    { href: "/services/cloud-migration", label: "Cloud Services & Migration" },
+    { href: "/services/cybersecurity", label: "Cybersecurity Solutions" },
+    { href: "/services/amc-support", label: "AMC & Support" },
   ];
 
   const companyLinks = [
-    { href: '/about', label: 'About Us' },
-    { href: '/contact', label: 'Contact Us' },
-    { href: '#', label: 'Careers' },
-    { href: '#', label: 'Case Studies' },
-    { href: '#', label: 'Blog' },
+    { href: "/about", label: "About Us" },
+    { href: "/contact", label: "Contact Us" },
+    { href: "#", label: "Careers" },
+    { href: "#", label: "Case Studies" },
+    { href: "#", label: "Blog" },
   ];
 
   const resourceLinks = [
-    { href: '#', label: 'Product Brochures' },
-    { href: '#', label: 'White Papers' },
-    { href: '#', label: 'Technical Documentation' },
-    { href: '#', label: 'FAQs' },
-    { href: '#', label: 'Support Portal' },
-    { href: '#', label: 'Partner Program' },
+    { href: "#", label: "Product Brochures" },
+    { href: "#", label: "White Papers" },
+    { href: "#", label: "Technical Documentation" },
+    { href: "#", label: "FAQs" },
+    { href: "#", label: "Support Portal" },
+    { href: "#", label: "Partner Program" },
   ];
 
   const industries = [
-    { icon: <Building className="w-4 h-4" />, label: 'Corporates' },
-    { icon: <GraduationCap className="w-4 h-4" />, label: 'Education' },
-    { icon: <Landmark className="w-4 h-4" />, label: 'Government' },
-    { icon: <Server className="w-4 h-4" />, label: 'Data Centers' },
+    { icon: <Building className="w-4 h-4" />, label: "Corporates" },
+    { icon: <GraduationCap className="w-4 h-4" />, label: "Education" },
+    { icon: <Landmark className="w-4 h-4" />, label: "Government" },
+    { icon: <Server className="w-4 h-4" />, label: "Data Centers" },
   ];
 
   const trustBadges = [
-    { icon: <Award />, text: 'ISO 9001:2015 Certified' },
-    { icon: <Shield />, text: 'Authorized Partner' },
-    { icon: <Clock />, text: '24/7 Support' },
-    { icon: <Headphones />, text: '500+ Projects' },
+    { icon: <Award />, text: "ISO 9001:2015 Certified" },
+    { icon: <Shield />, text: "Authorized Partner" },
+    { icon: <Clock />, text: "24/7 Support" },
+    { icon: <Headphones />, text: "500+ Projects" },
   ];
 
   return (
@@ -171,37 +174,43 @@ export default function Footer() {
 
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-0 py-16">
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-12 mb-12">
-
-
-            
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-12 mb-12">
             {/* Company Info - Spans 2 columns on large screens */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-            className="lg:col-span-2"
-
+              className="lg:col-span-2"
             >
               {/* Logo */}
-              <Link href="/" className="flex items-center gap-2 mb-6 group">
-                <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <span className="text-white font-black text-xl">SN</span>
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-bold flex-shrink-0"
+              >
+                <div className="h-20 w-[120px] overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/logoo.jpg"
+                    alt="logo"
+                    className="h-full w-full object-contain"
+                  />
                 </div>
-                <span className="text-2xl font-black text-white">Soltech Nexus</span>
               </Link>
 
               <p className="text-gray-400 mb-6 leading-relaxed">
-                Leading provider of enterprise-grade IT infrastructure solutions. We deliver cutting-edge networking, security, and cloud services to businesses across India.
+                Leading provider of enterprise-grade IT infrastructure
+                solutions. We deliver cutting-edge networking, security, and
+                cloud services to businesses across India.
               </p>
 
               {/* Industries We Serve */}
               <div className="mb-6">
-                <h5 className="text-white font-semibold mb-3 text-sm">INDUSTRIES WE SERVE</h5>
+                <h5 className="text-white font-semibold mb-3 text-sm">
+                  INDUSTRIES WE SERVE
+                </h5>
                 <div className="flex flex-wrap gap-2">
                   {industries.map((industry, index) => (
-                    <span 
+                    <span
                       key={index}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-gray-300 rounded-lg text-xs font-medium hover:bg-primary-500 hover:text-white transition-all cursor-pointer"
                     >
@@ -214,38 +223,40 @@ export default function Footer() {
 
               {/* Social Links */}
               <div>
-                <h5 className="text-white font-semibold mb-3 text-sm">CONNECT WITH US</h5>
+                <h5 className="text-white font-semibold mb-3 text-sm">
+                  CONNECT WITH US
+                </h5>
                 <div className="flex gap-3">
-                  <a 
-                    href="https://www.linkedin.com/company/soltech-nexus/" 
+                  <a
+                    href="https://www.linkedin.com/company/soltech-nexus/"
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="LinkedIn"
                   >
                     <FaLinkedin className="w-5 h-5" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="Twitter"
                   >
                     <FaTwitter className="w-5 h-5" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="Facebook"
                   >
                     <FaFacebook className="w-5 h-5" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="Instagram"
                   >
                     <FaInstagram className="w-5 h-5" />
                   </a>
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="YouTube"
                   >
@@ -269,8 +280,8 @@ export default function Footer() {
               <ul className="space-y-3">
                 {productLinks.map((link, index) => (
                   <li key={index}>
-                    <Link 
-                      href={link.href} 
+                    <Link
+                      href={link.href}
                       className="group flex items-center gap-2 text-gray-400 hover:text-primary-400 transition-all"
                     >
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -295,8 +306,8 @@ export default function Footer() {
               <ul className="space-y-3">
                 {serviceLinks.map((link, index) => (
                   <li key={index}>
-                    <Link 
-                      href={link.href} 
+                    <Link
+                      href={link.href}
                       className="group flex items-center gap-2 text-gray-400 hover:text-primary-400 transition-all"
                     >
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -321,8 +332,8 @@ export default function Footer() {
               <ul className="space-y-3">
                 {companyLinks.map((link, index) => (
                   <li key={index}>
-                    <Link 
-                      href={link.href} 
+                    <Link
+                      href={link.href}
                       className="group flex items-center gap-2 text-gray-400 hover:text-primary-400 transition-all"
                     >
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -332,71 +343,72 @@ export default function Footer() {
                 ))}
               </ul>
             </motion.div>
- 
+
             {/* Resources & Contact */}
-        <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.6, delay: 0.4 }}
-  className="lg:col-span-2"   // <-- THIS LINE IS THE FIX
->
-  <h4 className="text-white text-lg font-bold mb-6 flex items-center gap-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="lg:col-span-2" // <-- THIS LINE IS THE FIX
+            >
+              <h4 className="text-white text-lg font-bold mb-6 flex items-center gap-2">
                 <Contact className="w-5 h-5 text-primary-400" />
                 Contact us
               </h4>
 
-  <div className="space-y-4">
+              <div className="space-y-4">
+                {/* Phone */}
+                <a
+                  href="tel:+919023506084"
+                  className="flex items-start gap-4 text-gray-400 hover:text-primary-400 transition-all group w-full max-w-full"
+                >
+                  <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-all">
+                    <PhoneIcon className="w-4 h-4" />
+                  </div>
 
-    {/* Phone */}
-    <a 
-      href="tel:+919023506084" 
-      className="flex items-start gap-4 text-gray-400 hover:text-primary-400 transition-all group w-full max-w-full"
-    >
-      <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-all">
-        <PhoneIcon className="w-4 h-4" />
-      </div>
+                  <div className="w-full">
+                    <p className="text-xs text-gray-500 mb-1">Call Us</p>
+                    <p className="text-sm font-semibold">+91 90235 06084</p>
+                  </div>
+                </a>
 
-      <div className="w-full">
-        <p className="text-xs text-gray-500 mb-1">Call Us</p>
-        <p className="text-sm font-semibold">+91 90235 06084</p>
-      </div>
-    </a>
+                {/* Email */}
+                <a
+                  href="mailto:info@soltechnexus.com"
+                  className="flex items-start gap-4 text-gray-400 hover:text-primary-400 transition-all group w-full max-w-full"
+                >
+                  <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-all">
+                    <Mail className="w-4 h-4" />
+                  </div>
 
-    {/* Email */}
-    <a 
-      href="mailto:info@soltechnexus.com" 
-      className="flex items-start gap-4 text-gray-400 hover:text-primary-400 transition-all group w-full max-w-full"
-    >
-      <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-all">
-        <Mail className="w-4 h-4" />
-      </div>
+                  <div className="w-full">
+                    <p className="text-xs text-gray-500 mb-1">Email Us</p>
+                    <p className="text-sm font-semibold break-all">
+                      info@soltechnexus.com
+                    </p>
+                  </div>
+                </a>
 
-      <div className="w-full">
-        <p className="text-xs text-gray-500 mb-1">Email Us</p>
-        <p className="text-sm font-semibold break-all">info@soltechnexus.com</p>
-      </div>
-    </a>
+                {/* Address */}
+                <div className="flex items-start gap-4 text-gray-400 w-full max-w-full">
+                  <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-4 h-4" />
+                  </div>
 
-    {/* Address */}
-    <div className="flex items-start gap-4 text-gray-400 w-full max-w-full">
-      <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-        <MapPin className="w-4 h-4" />
-      </div>
-
-      <div className="w-full">
-        <p className="text-xs text-gray-500 mb-1">Visit Us</p>
-        <p className="text-sm font-semibold leading-relaxed break-words">
-          Vibrant Park, Survey No. 182,<br />
-          Near NH 8, GIDC Phase 1,<br />
-          Vapi, Gujarat - 396195, India
-        </p>
-      </div>
-    </div>
-
-  </div>
-</motion.div>
-
+                  <div className="w-full">
+                    <p className="text-xs text-gray-500 mb-1">Visit Us</p>
+                    <p className="text-sm font-semibold leading-relaxed break-words">
+                      Vibrant Park, Survey No. 182,
+                      <br />
+                      Near NH 8, GIDC Phase 1,
+                      <br />
+                      Vapi, Gujarat - 396195, India
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
           {/* Partner Logos */}
@@ -421,13 +433,27 @@ export default function Footer() {
           <div className="border-t border-gray-800 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-gray-500 text-sm text-center md:text-left">
-                © {new Date().getFullYear()} <span className="text-primary-400 font-semibold">Soltech Nexus</span>. All rights reserved.
+                © {new Date().getFullYear()}{" "}
+                <span className="text-primary-400 font-semibold">
+                  Soltech Nexus
+                </span>
+                . All rights reserved.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-                <Link href="/privacypolicy" className="text-gray-500 hover:text-primary-400 transition-colors">Privacy Policy</Link>
+                <Link
+                  href="/privacypolicy"
+                  className="text-gray-500 hover:text-primary-400 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
                 <span className="text-gray-700">•</span>
-                <Link href="/termandcondition" className="text-gray-500 hover:text-primary-400 transition-colors">Terms of Service</Link>
+                <Link
+                  href="/termandcondition"
+                  className="text-gray-500 hover:text-primary-400 transition-colors"
+                >
+                  Terms of Service
+                </Link>
                 <span className="text-gray-700">•</span>
               </div>
 

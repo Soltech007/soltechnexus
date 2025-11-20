@@ -58,20 +58,16 @@ const row2Brands: Brand[] = [
 ];
 
 
-// ▶️ Logo Component
+// ▶️ Logo Component (removed float animation)
 const LogoItem = memo(({ brand, index }: LogoItemProps) => (
-  <div
-    className="flex-shrink-0 mx-6 group"
-    style={{
-      animation: `float ${3 + (index % 3)}s ease-in-out infinite`,
-      animationDelay: `${index * 0.2}s`,
-    }}
-  >
+  <div className="flex-shrink-0 mx-6 group">
     <div className="bg-white px-8 py-6 rounded-xl shadow-sm border border-gray-200 transition-all group-hover:shadow-xl group-hover:scale-105">
       <img src={brand.logo} alt={brand.name} className="h-20 object-contain" />
     </div>
   </div>
 ));
+
+LogoItem.displayName = "LogoItem";
 
 // ▶️ Infinite Slider Row
 const InfiniteSliderRow = memo(
@@ -88,7 +84,10 @@ const InfiniteSliderRow = memo(
                 : "animate-scroll-right"
               : "pause-animation"
           }`}
-          style={{ animationDuration: `${speed}s` }}
+          style={{ 
+            animationDuration: `${speed}s`,
+            ['--mobile-speed' as string]: `${speed * 0.5}s`
+          }}
         >
           {repeated.map((brand, index) => (
             <LogoItem
@@ -102,6 +101,8 @@ const InfiniteSliderRow = memo(
     );
   }
 );
+
+InfiniteSliderRow.displayName = "InfiniteSliderRow";
 
 // ▶️ MAIN COMPONENT
 const BrandLogoSlider = () => {
@@ -163,13 +164,24 @@ const BrandLogoSlider = () => {
               0% { transform: translateX(-50%); }
               100% { transform: translateX(0); }
             }
-            @keyframes float {
-              0%,100% { transform: translateY(0); }
-              50% { transform: translateY(-6px); }
+            
+            .animate-scroll-left { 
+              animation: scroll-left linear infinite; 
             }
-            .animate-scroll-left { animation: scroll-left linear infinite; }
-            .animate-scroll-right { animation: scroll-right linear infinite; }
-            .pause-animation { animation-play-state: paused !important; }
+            .animate-scroll-right { 
+              animation: scroll-right linear infinite; 
+            }
+            .pause-animation { 
+              animation-play-state: paused !important; 
+            }
+
+            /* Mobile: Faster speed */
+            @media (max-width: 1023px) {
+              .animate-scroll-left,
+              .animate-scroll-right {
+                animation-duration: var(--mobile-speed) !important;
+              }
+            }
           `}</style>
         </div>
       </section>

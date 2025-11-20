@@ -283,3 +283,9 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
 }
 }
 
+@media (max-width: 1023px) {
+  .animate-scroll-left,
+  .animate-scroll-right {
+    animation-duration: var(--mobile-speed) !important;
+  }
+}
