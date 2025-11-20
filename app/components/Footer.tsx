@@ -217,7 +217,7 @@ export default function Footer() {
                 <h5 className="text-white font-semibold mb-3 text-sm">CONNECT WITH US</h5>
                 <div className="flex gap-3">
                   <a 
-                    href="#" 
+                    href="https://www.linkedin.com/company/soltech-nexus/" 
                     className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-500 hover:scale-110 transition-all text-gray-400 hover:text-white"
                     aria-label="LinkedIn"
                   >
@@ -400,7 +400,7 @@ export default function Footer() {
           </div>
 
           {/* Partner Logos */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -415,7 +415,7 @@ export default function Footer() {
               <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" className="h-10 grayscale hover:grayscale-0 transition-all" alt="AWS" />
               <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" className="h-8 grayscale hover:grayscale-0 transition-all" alt="Azure" />
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Bottom Bar */}
           <div className="border-t border-gray-800 pt-8">

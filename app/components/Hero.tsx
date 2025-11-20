@@ -10,7 +10,6 @@ const HeroSlider = () => {
   const [isAutoPlay, setIsAutoPlay] = useState(true)
 
   const slides = [
-  
     {
       id: 2,
       image: "/hero.jpg",

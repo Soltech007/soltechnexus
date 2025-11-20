@@ -127,12 +127,17 @@ export function NavbarDemo() {
           }}
         >
           <div className="flex items-center justify-between h-14 container-custom">
-            <Link href="/" className="flex items-center gap-2 font-bold flex-shrink-0">
-              <div className="logo-icon-wrapper">
-                <span className="logo-text">SN</span>
-              </div>
-              <span className="hidden sm:block text-xl font-black logo-main-text">Soltech Nexus</span>
-            </Link>
+         <Link href="/" className="flex items-center gap-2 font-bold flex-shrink-0">
+  <div className="h-20 w-[120px] overflow-hidden flex items-center justify-center">
+    <img 
+      src="/logoo.jpg" 
+      alt="logo"
+      className="h-full w-full object-contain"
+    />
+  </div>
+</Link>
+
+
 
             <nav className="hidden lg:flex items-center font-medium gap-2">
               {navLinks.map((link) => (
