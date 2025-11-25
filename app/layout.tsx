@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 export const metadata: Metadata = {
   title: 'Soltech Nexus - Enterprise IT Solutions',
   description: 'Leading provider of IT infrastructure, networking, and cloud services for modern businesses.',
-  icons:'/logoo.jpg'
+  icons:'/logoo.jpeg'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
