@@ -21,7 +21,7 @@ export default function TermsAndConditions() {
         />
 
         {/* Soft Glow */}
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-primary-500/20 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-primary-700/20 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
 
         <div className="container-custom relative z-10">
           <motion.div

@@ -82,7 +82,7 @@ const HeroSlider = () => {
 
   return (
     <section
-      className="relative w-full min-h-[100vh] lg:h-[700px] overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-black pt-16 sm:pt-20 lg:pt-24"
+      className="relative w-full h-screen lg:h-[700px] overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-black pt-16 sm:pt-20 lg:pt-24"
       onMouseEnter={() => setIsAutoPlay(false)}
       onMouseLeave={() => setIsAutoPlay(true)}
     >
@@ -113,18 +113,18 @@ const HeroSlider = () => {
           </motion.div>
 
           {/* Multi-layer Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/75 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 sm:via-black/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/40" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-purple-900/10" />
 
           {/* Content */}
-          <div className="absolute inset-0 flex items-center pb-16 sm:pb-20 lg:pb-0">
+          <div className="absolute inset-0 flex items-center pb-20 sm:pb-24 lg:pb-0">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <motion.div
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                className="max-w-3xl space-y-4 sm:space-y-5 lg:space-y-7"
+                className="max-w-3xl space-y-5 sm:space-y-5 lg:space-y-7"
               >
                 {/* Badge */}
                 <motion.div
@@ -132,8 +132,8 @@ const HeroSlider = () => {
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
                 >
-                  <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-primary via-primary-light to-blue-400 text-white px-2.5 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-full text-[9px] sm:text-xs md:text-sm font-black tracking-wider shadow-2xl uppercase">
-                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></span>
+                  <span className="inline-flex items-center gap-2 bg-primary-700  text-gray-200 px-4 sm:px-4 lg:px-5 py-2 sm:py-2 lg:py-2.5 rounded-full text-xs sm:text-xs md:text-sm font-black tracking-wider shadow-2xl uppercase">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     {slides[currentSlide].badge}
                   </span>
                 </motion.div>
@@ -143,11 +143,10 @@ const HeroSlider = () => {
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
-                  className="pt-1 sm:pt-2"
                 >
                   <h1 className="text-white leading-[1.1]">
                     <motion.span 
-                      className="block text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-2 sm:mb-3 drop-shadow-2xl"
+                      className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-3 sm:mb-3 drop-shadow-2xl"
                       initial={{ x: -50, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.6 }}
@@ -155,12 +154,12 @@ const HeroSlider = () => {
                       {slides[currentSlide].title}
                     </motion.span>
                     <motion.span 
-                      className="block text-xl sm:text-2xl md:text-3xl lg:text-5xl font-light"
+                      className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light"
                       initial={{ x: -50, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.7 }}
                     >
-                      <span className="bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
+                      <span className="bg-gradient-to-r from-primary-700 via-blue-700 to-cyan-500 bg-clip-text text-transparent drop-shadow-lg">
                         {slides[currentSlide].highlight}
                       </span>
                     </motion.span>
@@ -172,7 +171,7 @@ const HeroSlider = () => {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.8, duration: 0.8 }}
-                  className="text-gray-200 text-sm sm:text-base lg:text-xl font-medium max-w-2xl leading-relaxed drop-shadow-lg pr-4 sm:pr-0 pt-1 sm:pt-2"
+                  className="text-gray-200 text-base sm:text-lg lg:text-xl font-medium max-w-2xl leading-relaxed drop-shadow-lg pr-4 sm:pr-0"
                 >
                   {slides[currentSlide].subtitle}
                 </motion.p>
@@ -182,11 +181,11 @@ const HeroSlider = () => {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.9, duration: 0.8 }}
-                  className="flex flex-wrap gap-2.5 sm:gap-3 lg:gap-4 pt-3 sm:pt-4"
+                  className="flex flex-wrap gap-3 sm:gap-3 lg:gap-4 pt-2 sm:pt-2"
                 >
                   <Link
                     href={slides[currentSlide].buttonLink}
-                    className="group relative bg-white text-black px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 rounded-full text-xs sm:text-sm lg:text-base font-bold transition-all duration-500 shadow-2xl flex items-center justify-center gap-2 overflow-hidden hover:scale-105 active:scale-95"
+                    className="group relative bg-white text-black px-5 sm:px-6 lg:px-8 py-3 sm:py-3 lg:py-4 rounded-full text-sm sm:text-sm lg:text-base font-bold transition-all duration-500 shadow-2xl flex items-center justify-center gap-2 overflow-hidden hover:scale-105 active:scale-95"
                   >
                     <span className="relative z-10 whitespace-nowrap">{slides[currentSlide].buttonText}</span>
                     <motion.span 
@@ -200,23 +199,23 @@ const HeroSlider = () => {
 
                   <Link
                     href="/contact"
-                    className="group border-2 border-white text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 rounded-full text-xs sm:text-sm lg:text-base font-bold hover:bg-white hover:text-black transition-all duration-300 text-center backdrop-blur-md hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
+                    className="group border-2 border-white text-white px-5 sm:px-6 lg:px-8 py-3 sm:py-3 lg:py-4 rounded-full text-sm sm:text-sm lg:text-base font-bold hover:bg-white hover:text-black transition-all duration-300 text-center backdrop-blur-md hover:scale-105 active:scale-95 shadow-xl whitespace-nowrap"
                   >
                     Contact Experts
                   </Link>
                 </motion.div>
 
-                {/* Features - Balanced size for mobile */}
+                {/* Features */}
                 <motion.div
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1, duration: 0.8 }}
-                  className="flex flex-nowrap gap-2 sm:gap-3 lg:gap-4 pt-3 sm:pt-4 overflow-x-auto scrollbar-hide pb-2"
+                  className="flex flex-nowrap gap-2 sm:gap-3 lg:gap-4 pt-2 sm:pt-2 overflow-x-auto scrollbar-hide pb-2"
                 >
                   {[
-                    { icon: <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-300" />, text: "Dell Certified" },
-                    { icon: <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-300" />, text: "Cisco Partner" },
-                    { icon: <Cloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-300" />, text: "Microsoft" },
+                    { icon: <Award className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Dell Certified" },
+                    { icon: <ShieldCheck className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Cisco Partner" },
+                    { icon: <Cloud className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Microsoft" },
                   ].map((feature, index) => (
                     <motion.div
                       key={index}
@@ -224,11 +223,11 @@ const HeroSlider = () => {
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 1.1 + index * 0.15, type: "spring", stiffness: 120 }}
                       className="
-                        flex items-center gap-1.5 sm:gap-2
+                        flex items-center gap-2
                         bg-white/10 backdrop-blur-xl 
-                        px-2.5 sm:px-3 lg:px-5 
-                        py-1.5 sm:py-2 lg:py-2.5
-                        rounded-xl sm:rounded-xl lg:rounded-2xl 
+                        px-3 sm:px-3 lg:px-5 
+                        py-2 sm:py-2 lg:py-2.5
+                        rounded-xl lg:rounded-2xl 
                         border border-white/20 
                         shadow-[0_2px_10px_rgba(255,255,255,0.12)]
                         hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)]
@@ -244,7 +243,7 @@ const HeroSlider = () => {
                         {feature.icon}
                       </span>
 
-                      <span className="text-white/95 text-[11px] sm:text-xs lg:text-sm font-semibold tracking-wide whitespace-nowrap">
+                      <span className="text-white/95 text-xs sm:text-xs lg:text-sm font-semibold tracking-wide whitespace-nowrap">
                         {feature.text}
                       </span>
                     </motion.div>

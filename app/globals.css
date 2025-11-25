@@ -2,20 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   BLUE THEME CSS VARIABLES
-   ============================================ */
-
 :root {
+  --header-bg: #ffffff;
+  --header-bg-scrolled: #f8f9fa;
+  --btn-bg: #004080;
+  --btn-bg-scrolled: #003366;
 
-
-
-  --header-bg: #ffffff; /* default background */
-  --header-bg-scrolled: #f8f9fa; /* on scroll */
-  --btn-bg: #2563eb; /* button color */
-  --btn-bg-scrolled: #1e40af; /* button when scrolled */
-
-  /* ===== PRIMARY BLUE COLORS ===== */
+  /* ===== PRIMARY BLUE COLORS (Primary-700 as Main) ===== */
   --primary-50: #eff6ff;
   --primary-100: #dbeafe;
   --primary-200: #bfdbfe;
@@ -23,27 +16,70 @@
   --primary-400: #60a5fa;
   --primary-500: #0066CC;
   --primary-600: #0052a3;
-  --primary-700: #004080;
+  --primary-700: #004080;  /* 🎯 MAIN PRIMARY COLOR */
   --primary-800: #003366;
   --primary-900: #002952;
   --primary-950: #001a33;
   
-  --primary: #0066CC;
-  --primary-dark: #003366;
-  --primary-light: #60a5fa;
-  --primary-foreground: #ffffff;
+  /* ===== DARK BLUE COLORS ===== */
+  --dark-blue-50: #e0f2fe;
+  --dark-blue-100: #b9e1fc;
+  --dark-blue-200: #7cc4fa;
+  --dark-blue-300: #38a3f7;
+  --dark-blue-400: #0284c7;
+  --dark-blue-500: #0369a1;
+  --dark-blue-600: #075985;
+  --dark-blue-700: #0c4a6e;
+  --dark-blue-800: #082f49;
+  --dark-blue-900: #0a1929;
+  --dark-blue-950: #020617;
+  
+  /* ===== NAVY/MIDNIGHT BLUE ===== */
+  --navy-50: #f0f9ff;
+  --navy-100: #e0f2fe;
+  --navy-200: #bae6fd;
+  --navy-300: #7dd3fc;
+  --navy-400: #1e40af;
+  --navy-500: #1e3a8a;
+  --navy-600: #1e293b;
+  --navy-700: #0f172a;
+  --navy-800: #0a0e1a;
+  --navy-900: #020617;
+  --navy-950: #000510;
 
+  /* ===== PRIMARY VARIABLES (Using 700 as Main) ===== */
+  --primary: #004080;           /* primary-700 */
+  --primary-dark: #002952;      /* primary-900 */
+  --primary-darker: #001a33;    /* primary-950 */
+  --primary-light: #0052a3;     /* primary-600 */
+  --primary-lighter: #0066CC;   /* primary-500 */
+  --primary-foreground: #ffffff;
+  
+  /* Dark Blue Variables */
+  --dark-blue: #0369a1;
+  --dark-blue-deep: #082f49;
+  --navy: #1e3a8a;
+  --midnight: #0f172a;
+
+  /* ===== OTHER COLORS ===== */
   --secondary: #0ea5e9;
   --accent: #f97316;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
 
+  /* ===== BACKGROUNDS ===== */
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
+  --bg-dark-blue: #0c4a6e;
+  --bg-navy: #0f172a;
+  
+  /* ===== TEXT COLORS ===== */
   --text-primary: #0f172a;
   --text-secondary: #64748b;
+  --text-on-dark-blue: #ffffff;
 
+  /* ===== SHADCN VARIABLES ===== */
   --background: 0 0% 100%;
   --foreground: 222 47% 11%;
   --card: 0 0% 100%;
@@ -54,11 +90,11 @@
   --muted-foreground: 215 16% 47%;
   --border: 214 32% 91%;
   --input: 214 32% 91%;
-  --ring: 213 94% 40%;
+  --ring: 210 63% 25%;  /* Updated to match primary-700 */
   --radius: 0.75rem;
 }
 
-/* FORCE REMOVE ALL SPACING */
+/* ===== RESET STYLES ===== */
 *,
 *::before,
 *::after {
@@ -86,13 +122,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Remove all default margins */
 h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
   margin: 0;
   padding: 0;
 }
 
-/* TYPOGRAPHY COMPONENTS */
+/* ===== TYPOGRAPHY COMPONENTS ===== */
 @layer components {
   .h1 {
     @apply text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight;
@@ -130,22 +165,57 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
     @apply text-sm md:text-base text-gray-500 leading-normal;
   }
 
+  /* ===== PRIMARY BUTTONS (Using Primary-700) ===== */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-700 hover:bg-primary-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
   }
 
   .btn-primary-lg {
-    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary-700 hover:bg-primary-800 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-primary-custom {
+    @apply bg-primary-700 hover:bg-primary-800 font-bold text-white;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary-700 text-primary-700 hover:bg-primary-700 hover:text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105;
   }
 
   .btn-gradient {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 hover:from-primary-600 hover:via-primary-700 hover:to-primary-800 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900 hover:from-primary-600 hover:via-primary-700 hover:to-primary-800 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105;
   }
 
+  /* ===== DARK BLUE BUTTONS ===== */
+  .btn-dark-blue {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0369a1] hover:bg-[#075985] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-dark-blue-lg {
+    @apply inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#0369a1] hover:bg-[#075985] text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-navy {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#1e3a8a] hover:bg-[#1e40af] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-midnight {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-outline-dark-blue {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-[#0369a1] text-[#0369a1] hover:bg-[#0369a1] hover:text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-gradient-dark-blue {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[#0369a1] via-[#075985] to-[#0c4a6e] hover:from-[#075985] hover:via-[#0c4a6e] hover:to-[#082f49] text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-gradient-navy {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[#1e3a8a] via-[#1e40af] to-[#0369a1] hover:from-[#1e40af] hover:via-[#0369a1] hover:to-[#075985] text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105;
+  }
+
+  /* ===== CARDS ===== */
   .card {
     @apply bg-white rounded-2xl p-6 border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300;
   }
@@ -154,10 +224,36 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
     @apply bg-white rounded-2xl p-6 border border-gray-200 hover:border-primary-300 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300;
   }
 
-  .badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold;
+  .card-primary {
+    @apply bg-primary-700 text-white rounded-2xl p-6 border border-primary-600 shadow-md hover:shadow-xl transition-all duration-300;
   }
 
+  .card-dark-blue {
+    @apply bg-[#0c4a6e] text-white rounded-2xl p-6 border border-[#075985] shadow-md hover:shadow-xl transition-all duration-300;
+  }
+
+  .card-navy {
+    @apply bg-[#0f172a] text-white rounded-2xl p-6 border border-[#1e293b] shadow-md hover:shadow-xl transition-all duration-300;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold;
+  }
+
+  .badge-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-full text-sm font-semibold;
+  }
+
+  .badge-dark-blue {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-[#e0f2fe] text-[#0369a1] rounded-full text-sm font-semibold;
+  }
+
+  .badge-navy {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-[#1e40af] text-white rounded-full text-sm font-semibold;
+  }
+
+  /* ===== SECTIONS ===== */
   .section {
     @apply py-16 md:py-20 lg:py-24;
   }
@@ -167,27 +263,116 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
   }
 
   .section-blue {
-    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 text-white;
+    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary-700 via-primary-800 to-primary-900 text-white;
   }
 
+  .section-blue-solid {
+    @apply py-16 md:py-20 lg:py-24 bg-primary-700 text-white;
+  }
+
+  .section-dark-blue {
+    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-[#0369a1] via-[#075985] to-[#0c4a6e] text-white;
+  }
+
+  .section-navy {
+    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#0369a1] text-white;
+  }
+
+  .section-midnight {
+    @apply py-16 md:py-20 lg:py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155] text-white;
+  }
+
+  .section-dark-blue-solid {
+    @apply py-16 md:py-20 lg:py-24 bg-[#0c4a6e] text-white;
+  }
+
+  .section-navy-solid {
+    @apply py-16 md:py-20 lg:py-24 bg-[#0f172a] text-white;
+  }
+
+  /* ===== CONTAINER ===== */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* ===== EFFECTS ===== */
   .hover-lift {
     @apply transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
   }
 
-  .bg-primary-gradient {
-    @apply bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800;
+  /* ===== BACKGROUND GRADIENTS ===== */
+  .bg-primary-gradient{
+    @apply bg-gradient-to-br from-primary-700 via-primary-800 to-primary-900;
+  }
+
+  .bg-primary-gradient-light {
+    @apply bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800;
+  }
+
+  .bg-primary-gradient-dark {
+    @apply bg-gradient-to-br from-primary-800 via-primary-900 to-primary-950;
+  }
+
+  .bg-dark-blue-gradient {
+    @apply bg-gradient-to-br from-[#0369a1] via-[#075985] to-[#0c4a6e];
+  }
+
+  .bg-navy-gradient {
+    @apply bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#0369a1];
+  }
+
+  .bg-midnight-gradient {
+    @apply bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155];
   }
 
   .bg-blue-soft {
     @apply bg-gradient-to-br from-blue-50 via-white to-blue-100;
   }
 
+  .bg-primary-soft {
+    @apply bg-gradient-to-br from-primary-50 via-white to-primary-100;
+  }
+
+  .bg-dark-blue-soft {
+    @apply bg-gradient-to-br from-[#e0f2fe] via-white to-[#bae6fd];
+  }
+
+  /* ===== TEXT GRADIENTS ===== */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-700 to-primary-900 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-dark-blue {
+    @apply bg-gradient-to-r from-[#0369a1] to-[#082f49] bg-clip-text text-transparent;
+  }
+
+  .gradient-text-navy {
+    @apply bg-gradient-to-r from-[#1e3a8a] to-[#0f172a] bg-clip-text text-transparent;
+  }
+
+  /* ===== OVERLAYS ===== */
+  .overlay-primary {
+    @apply absolute inset-0 bg-primary-700 bg-opacity-90;
+  }
+
+  .overlay-dark-blue {
+    @apply absolute inset-0 bg-[#0c4a6e] bg-opacity-90;
+  }
+
+  .overlay-navy {
+    @apply absolute inset-0 bg-[#0f172a] bg-opacity-90;
+  }
+
+  .overlay-primary-gradient {
+    @apply absolute inset-0 bg-gradient-to-br from-primary-700/90 via-primary-800/90 to-primary-900/90;
+  }
+
+  .overlay-dark-blue-gradient {
+    @apply absolute inset-0 bg-gradient-to-br from-[#0369a1]/90 via-[#075985]/90 to-[#0c4a6e]/90;
   }
 }
 
@@ -200,92 +385,189 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, blockquote, dl, dd {
   }
 }
 
-
+/* ===== NAVIGATION & HEADER COMPONENTS ===== */
 @layer components {
-  .header-bg {
-    @apply bg-transparent; /* No background when at top */
-  }
-  .header-bg-scrolled {
-    @apply bg-white; /* White background on scroll */
-  }
-
-  /* Main navigation link styles */
-  .nav-link {
-    @apply relative text-gray-700 font-semibold transition-colors duration-300 hover:text-primary-500 py-2;
-  }
-
-  /* Underline effect for links without dropdown */
-  .nav-link-underline {
-    @apply absolute bottom-0 left-0 h-0.5 bg-primary-500 w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
-  }
-  
-  /* Dropdown container */
-  .nav-dropdown {
-    @apply mt-2 bg-white rounded-xl shadow-lg border border-gray-200;
-  }
-  
-  /* Individual dropdown item */
-  .nav-dropdown-item {
-    @apply block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200;
-  }
-
-  /* Custom 'Get Started' button style */
-  .btn-primary-custom {
-    @apply bg-primary-500 hover:bg-primary-600 font-bold;
-  }
-
-  @layer components {
-  /* --- NAVBAR STYLES --- */
-  
-  /* Scroll behavior */
+  /* ===== HEADER STYLES ===== */
   .header-bg {
     @apply bg-transparent;
   }
+  
   .header-bg-scrolled {
-    @apply bg-white; 
+    @apply bg-white shadow-md;
   }
 
-  /* Logo */
-  .logo-icon-wrapper {
-    @apply w-11 h-11 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg;
+  .header-bg-primary {
+    @apply bg-primary-700;
   }
+
+  .header-bg-dark-blue {
+    @apply bg-[#0c4a6e];
+  }
+
+  .header-bg-navy {
+    @apply bg-[#0f172a];
+  }
+
+  /* ===== LOGO ===== */
+  .logo-icon-wrapper {
+    @apply w-11 h-11 bg-primary-700 rounded-xl flex items-center justify-center shadow-lg;
+  }
+
+  .logo-icon-wrapper-dark-blue {
+    @apply w-11 h-11 bg-[#0369a1] rounded-xl flex items-center justify-center shadow-lg;
+  }
+
+  .logo-icon-wrapper-navy {
+    @apply w-11 h-11 bg-[#1e3a8a] rounded-xl flex items-center justify-center shadow-lg;
+  }
+
   .logo-text {
     @apply text-white font-black text-xl;
   }
+
   .logo-main-text {
-    @apply text-gray-800; /* Uses Tailwind's default gray */
+    @apply text-gray-800 font-black;
   }
 
-  /* Desktop Navigation link styles */
-  .nav-link {
-    @apply relative text-gray-700 font-semibold transition-colors duration-300 hover:text-primary-500 py-2;
+  .logo-main-text-primary {
+    @apply text-primary-700 font-black;
   }
+
+  .logo-main-text-dark-blue {
+    @apply text-[#0369a1] font-black;
+  }
+
+  /* ===== DESKTOP NAVIGATION LINKS ===== */
+  .nav-link {
+    @apply relative text-gray-700 font-semibold transition-colors duration-300 hover:text-primary-700 py-2;
+  }
+
+  .nav-link-white {
+    @apply relative text-white font-semibold transition-colors duration-300 hover:text-primary-200 py-2;
+  }
+
+  .nav-link-dark-blue {
+    @apply relative text-white font-semibold transition-colors duration-300 hover:text-[#7dd3fc] py-2;
+  }
+
   .nav-link-underline {
-    @apply absolute bottom-0 left-0 h-0.5 bg-primary-500 w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
+    @apply absolute bottom-0 left-0 h-0.5 bg-primary-700 w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
+  }
+
+  .nav-link-underline-white {
+    @apply absolute bottom-0 left-0 h-0.5 bg-white w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
+  }
+
+  .nav-link-underline-dark-blue {
+    @apply absolute bottom-0 left-0 h-0.5 bg-[#7dd3fc] w-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center;
   }
   
-  /* Desktop Dropdown container */
+  /* ===== DROPDOWN STYLES ===== */
   .nav-dropdown {
     @apply mt-2 bg-white rounded-xl shadow-lg border border-gray-200;
   }
-  /* Desktop Dropdown item */
+
+  .nav-dropdown-primary {
+    @apply mt-2 bg-primary-700 rounded-xl shadow-lg border border-primary-600;
+  }
+
+  .nav-dropdown-dark-blue {
+    @apply mt-2 bg-[#0c4a6e] rounded-xl shadow-lg border border-[#075985];
+  }
+  
   .nav-dropdown-item {
-    @apply block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200;
+    @apply block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors duration-200;
   }
 
-  /* Mobile Navigation link styles */
+  .nav-dropdown-item-primary {
+    @apply block w-full text-left px-4 py-2.5 text-sm text-white hover:bg-primary-600 hover:text-white transition-colors duration-200;
+  }
+
+  .nav-dropdown-item-dark-blue {
+    @apply block w-full text-left px-4 py-2.5 text-sm text-white hover:bg-[#075985] hover:text-[#7dd3fc] transition-colors duration-200;
+  }
+
+  /* ===== MOBILE NAVIGATION ===== */
   .nav-link-mobile {
-    @apply text-gray-700 hover:bg-primary-50 hover:text-primary-600;
+    @apply text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors duration-200;
   }
+
+  .nav-link-mobile-primary {
+    @apply text-white hover:bg-primary-600 hover:text-white transition-colors duration-200;
+  }
+
+  .nav-link-mobile-dark-blue {
+    @apply text-white hover:bg-[#075985] hover:text-[#7dd3fc] transition-colors duration-200;
+  }
+
   .nav-sublink-mobile {
-    @apply text-gray-600 hover:bg-gray-100;
+    @apply text-gray-600 hover:bg-gray-100 transition-colors duration-200;
   }
-}
+
+  .nav-sublink-mobile-primary {
+    @apply text-primary-100 hover:bg-primary-800 transition-colors duration-200;
+  }
+
+  .nav-sublink-mobile-dark-blue {
+    @apply text-gray-300 hover:bg-[#082f49] transition-colors duration-200;
+  }
+
+  /* ===== BUTTON VARIANTS ===== */
+  .btn-dark-blue-custom {
+    @apply bg-[#0369a1] hover:bg-[#075985] font-bold text-white;
+  }
 }
 
+/* ===== RESPONSIVE UTILITIES ===== */
 @media (max-width: 1023px) {
   .animate-scroll-left,
   .animate-scroll-right {
     animation-duration: var(--mobile-speed) !important;
   }
+}
+
+/* ===== CUSTOM ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
 }

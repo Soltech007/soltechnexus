@@ -74,7 +74,7 @@ export default function ProductsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="badge mb-6 bg-primary">
+            <div className="badge mb-6 bg-primary-600">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
               <span className="text-white">OUR PRODUCT PORTFOLIO</span>
             </div>
@@ -162,7 +162,7 @@ export default function ProductsPage() {
               transition={{ duration: 0.7 }}
             >
               <div className="badge mb-6">
-                <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-primary-700 rounded-full"></div>
                 <span>WHY CHOOSE US</span>
               </div>
               <h2 className="h2 mb-6">Premium Quality, Trusted Brands</h2>

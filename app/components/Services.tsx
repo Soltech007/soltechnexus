@@ -114,9 +114,6 @@ export default function ServicesPage() {
 
   return (
     <div className="w-full bg-white">
-      {/* ================================================= */}
-      {/*                     HERO                         */}
-      {/* ================================================= */}
       <section className="section-blue text-center overflow-hidden">
         <div className="absolute inset-0 opacity-10" 
           style={{ 
@@ -130,7 +127,7 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="badge mb-6 bg-primary">
+            <div className="badge mb-6 bg-primary-600">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
               <span className="text-white">OUR SERVICES</span>
             </div>
@@ -145,9 +142,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================================================= */}
-      {/*              SERVICES GRID                        */}
-      {/* ================================================= */}
       <section className="section bg-white">
         <div className="container-custom">
           <motion.div
@@ -219,7 +213,7 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <div className="badge mb-6">
-              <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-primary-700 rounded-full"></div>
               <span>OUR APPROACH</span>
             </div>
             <h2 className="h2 mb-4">How We Work</h2>
@@ -283,7 +277,7 @@ export default function ServicesPage() {
               transition={{ duration: 0.7 }}
             >
               <div className="badge mb-6">
-                <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-primary-700 rounded-full"></div>
                 <span>WHY CHOOSE US</span>
               </div>
               <h2 className="h2 mb-6">Trusted IT Partner for Leading Organizations</h2>

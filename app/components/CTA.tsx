@@ -4,7 +4,7 @@ import Link from "next/link"
 
 const CTA = () => {
   return (
-    <section className="relative bg-primary-gradient text-white py-20 overflow-hidden">
+    <section className="relative section-blue text-white py-20 overflow-hidden">
 
       {/* Soft Background Glow */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -63,7 +63,7 @@ const CTA = () => {
         <div className="mt-12 flex flex-wrap justify-center gap-8 text-white/90">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-xl">📞</div>
-            <span className="font-semibold">+91 7777 909 218</span>
+            <span className="font-semibold">+91 90235 06084</span>
           </div>
 
           <div className="flex items-center gap-2">

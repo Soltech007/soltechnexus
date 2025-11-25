@@ -214,7 +214,7 @@ const allServicesData: { [key: string]: any } = {
     tagline: "Build a network that powers your business at the speed of innovation.",
     description: "We design, implement, and manage enterprise-grade network infrastructure that delivers reliable, secure, and high-speed connectivity. Our networking solutions leverage best-in-class hardware from Dell and Cisco to create scalable networks that support your current needs while being ready for future growth.",
     extendedDescription: "Modern businesses require networks that are not just fast and reliable, but also secure, flexible, and intelligent. Our enterprise networking services encompass everything from initial network design and architecture to implementation, optimization, and ongoing management. We ensure your network infrastructure supports critical business applications, cloud services, unified communications, and emerging technologies like IoT and AI.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1920&auto=format&fit=crop",
+    image: "/network.jpg",
     
     serviceFeatures: [
       { name: "Network Design & Architecture", icon: <Network />, desc: "Custom network topology planning" },
@@ -381,7 +381,7 @@ const allServicesData: { [key: string]: any } = {
     tagline: "Accelerate innovation and agility with cloud-first infrastructure.",
     description: "We help organizations embrace the cloud with confidence through strategic planning, seamless migration, and ongoing optimization. Our cloud services cover AWS, Microsoft Azure, Google Cloud Platform, and productivity suites like Microsoft 365 and Google Workspace, ensuring you leverage the best cloud solutions for your needs.",
     extendedDescription: "Cloud adoption is no longer optional—it's essential for business agility, scalability, and innovation. Our cloud experts guide you through every step of your cloud journey, from initial assessment and strategy development to migration, optimization, and management. We ensure your cloud transformation delivers tangible business benefits while maintaining security, compliance, and cost control.",
-    image: "https://images.unsplash.com/photo-1667984390527-850f63192709?q=80&w=1920&auto=format&fit=crop",
+    image: "/hero2.jpg",
     
     serviceFeatures: [
       { name: "Cloud Strategy & Planning", icon: <Target />, desc: "Roadmap for cloud adoption" },
@@ -548,7 +548,7 @@ const allServicesData: { [key: string]: any } = {
     tagline: "Protect your digital assets from evolving cyber threats.",
     description: "We provide end-to-end cybersecurity services that protect your organization from modern threats. Our multi-layered security approach combines advanced technology, proven processes, and expert professionals to safeguard your data, systems, and reputation from cyber attacks.",
     extendedDescription: "In today's threat landscape, cybersecurity is not just about technology—it's about people, processes, and continuous vigilance. Our cybersecurity services span from initial risk assessment and security architecture design to implementation of advanced security controls, 24/7 monitoring, and incident response. We help you build cyber resilience while ensuring compliance with regulatory requirements.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1920&auto=format&fit=crop",
+    image: "/hero1.jpg",
     
     serviceFeatures: [
       { name: "Security Assessment", icon: <Shield />, desc: "Vulnerability and risk analysis" },

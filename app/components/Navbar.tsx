@@ -130,7 +130,7 @@ export function NavbarDemo() {
          <Link href="/" className="flex items-center gap-2 font-bold flex-shrink-0">
   <div className="h-20 w-[120px] overflow-hidden flex items-center justify-center">
     <img 
-      src="/logoo.jpg" 
+      src="/logoo.jpeg" 
       alt="logo"
       className="h-full w-full object-contain"
     />

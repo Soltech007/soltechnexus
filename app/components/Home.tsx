@@ -172,7 +172,7 @@ export default function Home() {
             className="text-center mb-20"
           >
             <div className="badge mb-6">
-              <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-primary-700 rounded-full animate-pulse"></div>
               <span>WHAT WE OFFER</span>
             </div>
             <h2 className="h1 mb-6">Complete IT Infrastructure Solutions</h2>
@@ -240,7 +240,7 @@ export default function Home() {
               transition={{ duration: 0.7 }}
             >
               <div className="badge mb-6">
-                <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-primary-700 rounded-full animate-pulse"></div>
                 <span>WHY CHOOSE US</span>
               </div>
               <h2 className="h1 mb-6">Your Trusted IT Partner</h2>

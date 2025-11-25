@@ -52,7 +52,7 @@ export default function AboutPage() {
       {/* ================================================= */}
       {/*                     HERO                         */}
       {/* ================================================= */}
-      <section className="relative bg-primary-gradient text-primary-foreground pt-32 pb-24 md:pt-40 md:pb-32 text-center overflow-hidden">
+      <section className="relative section-blue text-primary-foreground pt-32 pb-24 md:pt-40 md:pb-32 text-center overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, hsla(0,0%,100%,.2) 1px, transparent 1px)', backgroundSize: '2rem 2rem' }}></div>
         <div className="container-custom relative z-10">
           <motion.h1
@@ -86,7 +86,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="badge mb-6">
-              <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-primary-700 rounded-full"></div>
               <span>WHO WE ARE</span>
             </div>
             <h2 className="h2 mb-6">Your End-to-End IT Infrastructure Partner</h2>

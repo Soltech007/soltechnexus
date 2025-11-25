@@ -8,37 +8,37 @@ export function CarouselDemo() {
     {
       title: "CCTV & Surveillance",
       button: "Explore Security",
-      src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/cctv.jpg",
       link: "/products/cctv-surveillance"
     },
     {
       title: "Networking Devices",
       button: "View Devices",
-      src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/network.jpg",
       link: "/products/networking-devices"
     },
     {
       title: "Servers & Storage",
       button: "View Infrastructure",
-      src: "https://images.unsplash.com/photo-1565375706404-082d37dd1f5d?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/server.jpg",
       link: "/products/servers-storage"
     },
     {
       title: "Firewalls & Security",
       button: "Explore Security",
-      src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/security.jpg",
       link: "/products/firewalls-security"
     },
     {
       title: "Collaboration Tools",
       button: "Explore Tools",
-      src: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/tools.jpg",
       link: "/products/collaboration-tools"
     },
     {
       title: "Cybersecurity Software",
       button: "Secure Your Business",
-      src: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: "/software.jpg",
       link: "/products/cybersecurity-software"
     },
   ];
@@ -54,7 +54,7 @@ export function CarouselDemo() {
           className="text-center mb-20"
         >
           <div className="badge mb-6">
-            <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-primary-700 rounded-full animate-pulse"></div>
             <span>CASE STUDIES</span>
           </div>
           <h2 className="h1 mb-6">Our Featured Projects</h2>

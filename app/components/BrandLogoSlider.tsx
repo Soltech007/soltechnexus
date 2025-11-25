@@ -125,7 +125,7 @@ const BrandLogoSlider = () => {
             className="text-center mb-16"
           >
            <div className="badge mb-6">
-              <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-primary-700 rounded-full animate-pulse"></div>
                  <span>Our Partner</span>
             </div>
 

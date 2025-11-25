@@ -138,7 +138,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="badge mb-6 bg-primary">
+            <div className="badge mb-6 bg-primary-600">
               <Sparkles className="w-4 h-4 text-white" />
               <span className="text-white">GET IN TOUCH</span>
             </div>
@@ -296,11 +296,11 @@ export default function ContactPage() {
               className="space-y-8 lg:mt-4"
             >
               <h2 className="h3">Other Ways to Connect</h2>
-              <InfoCard
+              {/* <InfoCard
                 icon={<TimerIcon />}
                 title="Office Timing"
                 content="Monday to Saturday: 9:00 AM to 6:00 PM"
-              />
+              /> */}
               <InfoCard
                 icon={<Mail />}
                 title="Email Us"
