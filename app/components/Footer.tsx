@@ -364,7 +364,7 @@ export default function Footer() {
         rel="noopener noreferrer"
         className="text-primary-500 font-semibold hover:text-primary-600 hover:underline transition-all"
       >
-        Soltech
+        SOLTECH TechServices Pvt Ltd
       </a>
       . All rights reserved.
     </p>
