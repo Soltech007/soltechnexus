@@ -205,50 +205,7 @@ const HeroSlider = () => {
                   </Link>
                 </motion.div>
 
-                {/* Features */}
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                  className="flex flex-nowrap gap-2 sm:gap-3 lg:gap-4 pt-2 sm:pt-2 overflow-x-auto scrollbar-hide pb-2"
-                >
-                  {[
-                    { icon: <Award className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Dell Certified" },
-                    { icon: <ShieldCheck className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Cisco Partner" },
-                    { icon: <Cloud className="w-4 h-4 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary-700" />, text: "Microsoft" },
-                  ].map((feature, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 1.1 + index * 0.15, type: "spring", stiffness: 120 }}
-                      className="
-                        flex items-center gap-2
-                        bg-white/10 backdrop-blur-xl 
-                        px-3 sm:px-3 lg:px-5 
-                        py-2 sm:py-2 lg:py-2.5
-                        rounded-xl lg:rounded-2xl 
-                        border border-white/20 
-                        shadow-[0_2px_10px_rgba(255,255,255,0.12)]
-                        hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)]
-                        hover:bg-white/20 
-                        hover:border-white/40 
-                        hover:scale-105 lg:hover:scale-110
-                        transition-all duration-300 
-                        cursor-default
-                        flex-shrink-0
-                      "
-                    >
-                      <span className="drop-shadow flex-shrink-0">
-                        {feature.icon}
-                      </span>
-
-                      <span className="text-white/95 text-xs sm:text-xs lg:text-sm font-semibold tracking-wide whitespace-nowrap">
-                        {feature.text}
-                      </span>
-                    </motion.div>
-                  ))}
-                </motion.div>
+             
 
               </motion.div>
             </div>
