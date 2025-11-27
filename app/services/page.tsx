@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     "IT AMC support",
     "Soltech Nexus services"
   ],
+  alternates: {
+    canonical: "https://soltechnexus.com/services",
+  },
   openGraph: {
     title: "Soltech Nexus - Services",
     description:
@@ -24,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Soltech Nexus",
     images: [
       {
-        url: "/hero.jpg",
+        url: "/logo.webp",
         width: 1200,
         height: 630,
         alt: "Soltech Nexus Services",

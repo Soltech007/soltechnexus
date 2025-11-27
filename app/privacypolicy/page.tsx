@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "Data protection",
     "IT company privacy policy"
   ],
+  alternates: {
+    canonical: "https://soltechnexus.com/privacypolicy",
+  },
   openGraph: {
     title: "Privacy Policy - Soltech Nexus",
     description:
@@ -20,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "Soltech Nexus",
     images: [
       {
-        url: "/hero.jpg",
+        url: "/logo.webp",
         width: 1200,
         height: 630,
         alt: "Soltech Nexus Privacy Policy"

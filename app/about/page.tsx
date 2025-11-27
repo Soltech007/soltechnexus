@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     "Software development",
     "Tech company profile"
   ],
+  alternates: {
+    canonical: "https://soltechnexus.com/about"
+  },
   openGraph: {
     title: "About Soltech Nexus",
     description:
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logo.jpg",
+        url: "/logo.webp",
         width: 1200,
         height: 630,
         alt: "Soltech Nexus"

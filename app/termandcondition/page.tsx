@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     "Legal terms",
     "Soltech Nexus agreement",
   ],
+  alternates: {
+    canonical: "https://soltechnexus.com/termandcondition",
+  },
   openGraph: {
     title: "Terms & Conditions - Soltech Nexus",
     description:
@@ -21,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Soltech Nexus",
     images: [
       {
-        url: "/hero.jpg",
+        url: "/logo.webp",
         width: 1200,
         height: 630,
         alt: "Soltech Nexus Terms & Conditions",

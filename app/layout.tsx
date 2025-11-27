@@ -17,7 +17,10 @@ export const metadata: Metadata = {
     "Tech support",
     "SolTech Nexus"
   ],
-  icons: '/logoo.jpeg'
+  icons: '/logo.webp',
+  alternates: {
+    canonical: "https://soltechnexus.com/",
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
