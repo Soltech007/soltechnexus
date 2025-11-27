@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Sitemap: https://soltechnexus.com/sitemap.xml
+
+
+# Disallow admin or private pages (if any)
+Disallow: /api/
+Disallow: /private/
+Disallow: /temp/
+
+# Sitemap location
+Sitemap: https://soltechnexus.com/sitemap.xml

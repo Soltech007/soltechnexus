@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+<!-- Main Pages -->
+<url>
+  <loc>https://soltechnexus.com/</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1.0</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/about</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<!-- Products Main -->
+<url>
+  <loc>https://soltechnexus.com/products</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<!-- Product Categories -->
+<url>
+  <loc>https://soltechnexus.com/products/cctv-surveillance</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/products/networking-devices</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/products/servers-storage</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/products/firewalls-security</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/products/collaboration-tools</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/products/cybersecurity-software</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+</url>
+
+<!-- Services Main -->
+<url>
+  <loc>https://soltechnexus.com/services</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<!-- Service Pages -->
+<url>
+  <loc>https://soltechnexus.com/services/it-consulting</loc>
+  <lastmod>2025-11-27</lastmod>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/services/enterprise-networking</loc>
+  <lastmod>2025-11-27</lastmod>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/services/cloud-migration</loc>
+  <lastmod>2025-11-27</lastmod>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/services/cybersecurity</loc>
+  <lastmod>2025-11-27</lastmod>
+</url>
+
+<url>
+  <loc>https://soltechnexus.com/services/amc-support</loc>
+  <lastmod>2025-11-27</lastmod>
+</url>
+
+<!-- Contact -->
+<url>
+  <loc>https://soltechnexus.com/contact</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<!-- Privacy Policy -->
+<url>
+  <loc>https://soltechnexus.com/privacypolicy</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+<!-- Terms & Conditions -->
+<url>
+  <loc>https://soltechnexus.com/termandcondition</loc>
+  <lastmod>2025-11-27</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.5</priority>
+</url>
+
+</urlset>
