@@ -3,8 +3,36 @@ import Home from "./components/Home";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Soltech Nexus | Home",
-  description: "Soltech nexus.",
+  title: "Soltech Nexus | Enterprise IT Solutions & Services",
+  description:
+    "Soltech Nexus provides IT infrastructure, networking, CCTV, cloud services, cybersecurity, AMC support, and enterprise-scale technology solutions.",
+  keywords: [
+    "Soltech Nexus",
+    "IT services",
+    "Networking solutions",
+    "CCTV installation",
+    "Cloud services",
+    "Cybersecurity",
+    "IT infrastructure",
+    "AMC support",
+  ],
+  openGraph: {
+    title: "Soltech Nexus – Enterprise IT Solutions",
+    description:
+      "Transforming businesses with enterprise networking, cloud, CCTV, and cybersecurity solutions.",
+    url: "https://soltechnexus.com",
+    siteName: "Soltech Nexus",
+    images: [
+      {
+        url: "/hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Soltech Nexus Homepage",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 const Page = () => {

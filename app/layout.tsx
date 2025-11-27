@@ -8,6 +8,15 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: 'Soltech Nexus - Enterprise IT Solutions',
   description: 'Leading provider of IT infrastructure, networking, and cloud services for modern businesses.',
+  keywords: [
+    "IT services",
+    "CCTV installation",
+    "Networking solutions",
+    "Software development",
+    "Web development",
+    "Tech support",
+    "SolTech Nexus"
+  ],
   icons: '/logoo.jpeg'
 }
 
