@@ -125,7 +125,7 @@ export default function Footer() {
               >
                 <div className="h-16 sm:h-20 w-[100px] sm:w-[120px] overflow-hidden flex items-center justify-center">
                   <img
-                    src="/logoo..webp"
+                    src="/logoo.webp"
                     alt="logo"
                     className="h-full w-full object-contain"
                   />
