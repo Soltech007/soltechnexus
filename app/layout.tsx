@@ -43,12 +43,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={cn("antialiased")}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NRN3WN26"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
+         <iframe
+  title="Google Tag Manager"
+  src="https://www.googletagmanager.com/ns.html?id=GTM-NRN3JN26"
+  height="0"
+  width="0"
+  style={{ display: "none", visibility: "hidden" }}
+></iframe>
+
         </noscript>
         {/* End Google Tag Manager (noscript) */}
 
