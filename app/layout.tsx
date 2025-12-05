@@ -4,14 +4,6 @@ import { NavbarDemo } from "./components/Navbar";
 import Footer from "./components/Footer";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
-import localFont from "next/font/local";
-
-// Load Local Font (SEO + Performance Fix)
-const mainFont = localFont({
-  src: "../public/fonts/yourfont.woff2",
-  variable: "--font-main",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Soltech Nexus - Enterprise IT Solutions",
@@ -38,22 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${mainFont.variable} !scroll-smooth`}>
+    <html lang="en" className="!scroll-smooth">
       <head>
-
-        {/* Preconnect for Performance */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-
-        {/* Preload Fonts */}
-        <link
-          rel="preload"
-          href="/fonts/yourfont.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-
         {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`
@@ -64,26 +42,6 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-NRN3WN26');
           `}
         </Script>
-        {/* End Google Tag Manager */}
-
-        {/* SEO Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              name: "Soltech Nexus",
-              url: "https://soltechnexus.com",
-              description:
-                "Leading IT infrastructure, CCTV installation, networking, and enterprise cloud solutions.",
-              address: {
-                "@type": "PostalAddress",
-                addressCountry: "IN",
-              },
-            }),
-          }}
-        />
       </head>
 
       <body className={cn("antialiased")}>
@@ -97,7 +55,6 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        {/* End Google Tag Manager (noscript) */}
 
         <NavbarDemo />
         <main>{children}</main>
