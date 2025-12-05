@@ -8,37 +8,37 @@ export function CarouselDemo() {
     {
       title: "CCTV & Surveillance",
       button: "Explore Security",
-      src: "/cctv.jpg",
+      src: "/cctv.webp",
       link: "/products/cctv-surveillance"
     },
     {
       title: "Networking Devices",
       button: "View Devices",
-      src: "/network.jpg",
+      src: "/network.webp",
       link: "/products/networking-devices"
     },
     {
       title: "Servers & Storage",
       button: "View Infrastructure",
-      src: "/server.jpg",
+      src: "/server.webp",
       link: "/products/servers-storage"
     },
     {
       title: "Firewalls & Security",
       button: "Explore Security",
-      src: "/security.jpg",
+      src: "/security.webp",
       link: "/products/firewalls-security"
     },
     {
       title: "Collaboration Tools",
       button: "Explore Tools",
-      src: "/tools.jpg",
+      src: "/tools.webp",
       link: "/products/collaboration-tools"
     },
     {
       title: "Cybersecurity Software",
       button: "Secure Your Business",
-      src: "/software.jpg",
+      src: "/software.webp",
       link: "/products/cybersecurity-software"
     },
   ];

@@ -12,7 +12,7 @@ const HeroSlider = () => {
   const slides = [
     {
       id: 2,
-      image: "/hero.jpg",
+      image: "/hero.webp",
       title: "CCTV & Surveillance",
       highlight: "Security Systems",
       subtitle: "Advanced monitoring solutions with PeopleLink, BenQ, and Panasonic for complete security coverage",
@@ -22,7 +22,7 @@ const HeroSlider = () => {
     },
     {
       id: 1,
-      image: "/hero1.jpg",
+      image: "/hero1.webp",
       title: "IT Infrastructure",
       highlight: "Solutions",
       subtitle: "Transforming businesses with cutting-edge networking, cloud services, and cybersecurity solutions",
@@ -32,7 +32,7 @@ const HeroSlider = () => {
     },
     {
       id: 3,
-      image: "/hero3.jpg",
+      image: "/hero3.webp",
       title: "Cloud Migration",
       highlight: "AWS | Azure | Microsoft 365",
       subtitle: "Seamless cloud transformation with enterprise-grade security and scalability",
@@ -42,7 +42,7 @@ const HeroSlider = () => {
     },
     {
       id: 4,
-      image: "/hero4.jpg",
+      image: "/hero4.webp",
       title: "Network Security",
       highlight: "& Cybersecurity",
       subtitle: "Dell & Cisco powered firewalls, routers, and security appliances for enterprise protection",
@@ -52,7 +52,7 @@ const HeroSlider = () => {
     },
     {
       id: 5,
-      image: "/hero5.jpg",
+      image: "/hero5.webp",
       title: "IT Consultancy",
       highlight: "& Support",
       subtitle: "Expert guidance, AMC services, and 24/7 technical support for seamless operations",
