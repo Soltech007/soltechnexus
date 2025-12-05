@@ -42,6 +42,32 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-NRN3WN26');
           `}
         </Script>
+
+        {/* JSON-LD STRUCTURED DATA */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Soltech Nexus",
+              "url": "https://soltechnexus.com",
+              "logo": "https://soltechnexus.com/logo.webp",
+              "description":
+                "Leading provider of IT infrastructure, networking, CCTV, cloud services, and enterprise IT solutions.",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91-XXXXXXXXXX",
+                "contactType": "customer service",
+              },
+              "sameAs": [
+                "https://www.facebook.com/",
+                "https://www.instagram.com/",
+                "https://www.linkedin.com/",
+              ],
+            }),
+          }}
+        />
       </head>
 
       <body className={cn("antialiased")}>
