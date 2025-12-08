@@ -301,22 +301,22 @@ export default function Footer() {
                   >
                     <FaLinkedin className="w-4 h-4 sm:w-5 sm:h-5" />
                   </a>
-                  <a
+                  {/* <a
                     href="#"
                     className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-primary-700 hover:scale-110 transition-all text-gray-600 hover:text-white"
                     aria-label="Twitter"
                   >
                     <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </a>
+                  </a> */}
                   <a
-                    href="#"
+                    href="https://www.facebook.com/profile.php?id=61584477085968"
                     className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-primary-700 hover:scale-110 transition-all text-gray-600 hover:text-white"
                     aria-label="Facebook"
                   >
                     <FaFacebook className="w-4 h-4 sm:w-5 sm:h-5" />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.instagram.com/soltechnexus/"
                     className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-primary-700 hover:scale-110 transition-all text-gray-600 hover:text-white"
                     aria-label="Instagram"
                   >
