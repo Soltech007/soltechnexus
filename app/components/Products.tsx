@@ -139,10 +139,14 @@ export default function ProductsPage() {
                 </ul>
 
                 {/* CTA */}
-                <Link href={product.link} className="btn-outline w-full text-center">
-                  Explore Details
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+               <Link 
+  href={product.link} 
+  className="btn-outline w-full text-center"
+  aria-label={`Explore details about ${product.title}`}
+>
+  Explore {product.title}
+  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+</Link>
               </motion.div>
             ))}
           </div>
