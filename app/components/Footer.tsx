@@ -445,7 +445,7 @@ export default function Footer() {
 
                 {/* Email */}
                 <a
-                  href="mailto:info@soltechnexus.com"
+                  href="mailto:contact@soltechnexus.com"
                   className="flex items-start gap-2 sm:gap-3 lg:gap-4 text-gray-600 hover:text-primary-700 transition-all group"
                 >
                   <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-primary-700 group-hover:text-white transition-all flex-shrink-0">

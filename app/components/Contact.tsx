@@ -15,19 +15,16 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { ReactNode } from "react";
 
-// --- Reusable Info Card Component ---
-const InfoCard = ({
-  icon,
-  title,
-  content,
-  href,
-}: {
-  icon: React.ReactNode;
+interface InfoCardProps {
+  icon: ReactNode;
   title: string;
-  content: string;
+  content: ReactNode;
   href?: string;
-}) => {
+}
+
+const InfoCard = ({ icon, title, content, href }: InfoCardProps) => {
   const CardContent = () => (
     <div className="flex items-start gap-5 p-6 bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-200 hover:border-primary-300">
       <div className="flex-shrink-0 w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center">
@@ -49,8 +46,11 @@ const InfoCard = ({
       </a>
     );
   }
+
   return <CardContent />;
 };
+
+
 
 // --- Reusable FAQ Item Component ---
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
@@ -329,8 +329,8 @@ export default function ContactPage() {
               <InfoCard
                 icon={<Mail />}
                 title="Email Us"
-                content="info@soltechnexus.com"
-                href="mailto:info@soltechnexus.com"
+                content="contact@soltechnexus.com"
+                href="mailto:contact@soltechnexus.com"
               />
               <InfoCard
                 icon={<Phone />}
@@ -339,10 +339,16 @@ export default function ContactPage() {
                 href="tel:+91 90235 06084"
               />
               <InfoCard
-                icon={<MapPin />}
-                title="Our Office"
-                content="Vibrant Park, Survey No. 182 Near NH 8, GIDC Phase 1, Vapi, Gujarat - 396195, India"
-              />
+  icon={<MapPin />}
+  title="Our Office"
+  content={
+    <>
+      Vibrant Park, Survey No. 182 Near NH 8,<br />
+      GIDC Phase 1, Vapi, Gujarat - 396195, India
+    </>
+  }
+/>
+
             </motion.div>
           </div>
         </div>

@@ -124,7 +124,7 @@ export default function PrivacyPolicy() {
                 text: (
                   <span>
                     For privacy-related inquiries, contact us:<br /><br />
-                    <strong>Email:</strong> info@soltechnexus.com<br />
+                    <strong>Email:</strong> contact@soltechnexus.com<br />
                     <strong>Phone:</strong> +91 90235 06084<br />
                     <strong>Address:</strong> Vibrant Park, GIDC Phase 1, Vapi, Gujarat – 396195
                   </span>
