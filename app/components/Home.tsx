@@ -358,7 +358,9 @@ export default function Home() {
       {/* Partners */}
       <BrandLogoSlider />
 
-      <CTA />
+      <CTA params={{
+        slug: ""
+      }}  />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { 
@@ -34,10 +34,388 @@ import {
   Download,
   Check,
   Star,
-  Sparkles
+  Sparkles,
+  X,
+  Loader2
 } from 'lucide-react';
-import React from 'react';
-import CTA from '@/app/components/CTA';
+import React, { useState, useEffect } from 'react';
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import { Button } from '@/app/components/ui/button';
+import toast from "react-hot-toast";
+
+// ========================================
+// FORM CONSTANTS
+// ========================================
+const employeeRanges = [
+  { value: "1-10", label: "1-10" },
+  { value: "11-50", label: "11-50" },
+  { value: "51-200", label: "51-200" },
+  { value: "201-500", label: "201-500" },
+  { value: "501-1000", label: "501-1000" },
+  { value: "1000+", label: "1000+" },
+];
+
+const industries = [
+  "Agriculture", "Automotive", "Banking", "Chemical", "Consulting", "Education", 
+  "Financial Services", "Health Care", "Manufacturing", "Real Estate", 
+  "Retail & Wholesale", "Software", "Technology", "Logistics & Warehousing", "Other"
+].map((ind) => ({ value: ind, label: ind }));
+
+const statesAndCities: { [key: string]: string[] } = {
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur"],
+  "Delhi": ["New Delhi", "South Delhi", "North Delhi"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Vapi"],
+  "Karnataka": ["Bengaluru", "Mysuru", "Hubli"],
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"],
+  "Telangana": ["Hyderabad", "Warangal"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Ghaziabad"],
+  "West Bengal": ["Kolkata", "Howrah"],
+};
+const statesList = Object.keys(statesAndCities).sort();
+
+// ========================================
+// ENQUIRY MODAL COMPONENT
+// ========================================
+const EnquiryModal = ({ isOpen, onClose, pageContext }: { isOpen: boolean; onClose: () => void; pageContext: string }) => {
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  
+  const initialFormState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    website: '',
+    industry: '',
+    noOfEmployees: '',
+    state: '',
+    city: '',
+    message: ''
+  }
+  
+  const [formData, setFormData] = useState(initialFormState)
+  const [showCustomState, setShowCustomState] = useState(false);
+  const [showCustomCity, setShowCustomCity] = useState(false);
+  const [customState, setCustomState] = useState("");
+  const [customCity, setCustomCity] = useState("");
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = 'unset'
+    return () => { document.body.style.overflow = 'unset' }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (formData.state && formData.state !== "other" && statesAndCities[formData.state]) {
+      setAvailableCities(statesAndCities[formData.state]);
+      setShowCustomCity(false);
+      setFormData(prev => ({ ...prev, city: "" }));
+    } else if (formData.state === "other") {
+      setAvailableCities([]);
+      setShowCustomCity(true);
+    } else {
+      setAvailableCities([]);
+    }
+  }, [formData.state]);
+
+  const handleStateChange = (value: string) => {
+    if (value === "other") {
+      setShowCustomState(true);
+      setFormData(prev => ({ ...prev, state: "other", city: "" }));
+    } else {
+      setShowCustomState(false);
+      setCustomState("");
+      setFormData(prev => ({ ...prev, state: value, city: "" }));
+    }
+  };
+
+  const handleCityChange = (value: string) => {
+    if (value === "other") {
+      setShowCustomCity(true);
+      setFormData(prev => ({ ...prev, city: "other" }));
+    } else {
+      setShowCustomCity(false);
+      setCustomCity("");
+      setFormData(prev => ({ ...prev, city: value }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.firstName || !formData.email) {
+      toast.error("Name and Email are required")
+      return
+    }
+
+    setLoading(true)
+
+    const finalFormData = {
+        ...formData,
+        state: showCustomState ? customState : formData.state,
+        city: showCustomCity ? customCity : formData.city,
+        source: pageContext,
+        servicePage: pageContext
+    };
+
+    try {
+      const response = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalFormData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true)
+        toast.success("Inquiry Sent Successfully!")
+        setTimeout(() => {
+            onClose()
+            setSuccess(false)
+            setFormData(initialFormState)
+            setShowCustomState(false)
+            setShowCustomCity(false)
+            setCustomState("")
+            setCustomCity("")
+        }, 2500)
+      } else {
+        toast.error(data.error || "Submission failed.")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("Something went wrong")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative w-full max-w-3xl bg-background border rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+          >
+            <div className="absolute right-4 top-4 z-10">
+               <button 
+                 onClick={onClose} 
+                 className="p-2 rounded-full bg-muted/50 hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+               >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 sm:p-8 overflow-y-auto custom-scrollbar">
+              {success ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+                  <div className="h-16 w-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold">Thank You!</h3>
+                  <p className="text-muted-foreground">
+                    We have received your inquiry regarding <br/>
+                    <span className="font-semibold text-primary">{pageContext}</span>.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-6 pr-8">
+                    <h3 className="text-2xl font-bold font-headline">Get a Quote</h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Service: <span className="text-primary font-semibold">{pageContext}</span>
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <h4 className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wider border-b pb-1">Personal Details</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="firstName">First Name *</Label>
+                                <Input 
+                                    id="firstName" 
+                                    placeholder="First Name" 
+                                    value={formData.firstName}
+                                    onChange={(e) => setFormData(prev => ({...prev, firstName: e.target.value}))}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="lastName">Last Name</Label>
+                                <Input 
+                                    id="lastName" 
+                                    placeholder="Last Name" 
+                                    value={formData.lastName}
+                                    onChange={(e) => setFormData(prev => ({...prev, lastName: e.target.value}))}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wider border-b pb-1">Contact Info</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email *</Label>
+                                <Input 
+                                    id="email" 
+                                    type="email" 
+                                    placeholder="work@email.com"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData(prev => ({...prev, email: e.target.value}))}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="phone">Phone</Label>
+                                <Input 
+                                    id="phone" 
+                                    type="tel" 
+                                    placeholder="+91..."
+                                    value={formData.phone}
+                                    onChange={(e) => setFormData(prev => ({...prev, phone: e.target.value}))}
+                                />
+                            </div>
+                            <div className="space-y-2 sm:col-span-2">
+                                <Label htmlFor="website">Website (Optional)</Label>
+                                <Input 
+                                    id="website" 
+                                    type="url"
+                                    placeholder="https://yourcompany.com"
+                                    value={formData.website}
+                                    onChange={(e) => setFormData(prev => ({...prev, website: e.target.value}))}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wider border-b pb-1">Organization & Location</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                             <div className="space-y-2">
+                                <Label htmlFor="company">Organization Name</Label>
+                                <Input 
+                                    id="company" 
+                                    placeholder="Company Name"
+                                    value={formData.company}
+                                    onChange={(e) => setFormData(prev => ({...prev, company: e.target.value}))}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="industry">Industry</Label>
+                                <select
+                                    id="industry"
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={formData.industry}
+                                    onChange={(e) => setFormData(prev => ({...prev, industry: e.target.value}))}
+                                >
+                                    <option value="">Select Industry</option>
+                                    {industries.map((ind) => (
+                                        <option key={ind.value} value={ind.value}>{ind.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="employees">No. of Employees</Label>
+                                <select
+                                    id="employees"
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={formData.noOfEmployees}
+                                    onChange={(e) => setFormData(prev => ({...prev, noOfEmployees: e.target.value}))}
+                                >
+                                    <option value="">Select Range</option>
+                                    {employeeRanges.map((range) => (
+                                        <option key={range.value} value={range.value}>{range.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                             <div className="space-y-2">
+                                <Label htmlFor="state">State</Label>
+                                <select
+                                    id="state"
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={showCustomState ? "other" : formData.state}
+                                    onChange={(e) => handleStateChange(e.target.value)}
+                                >
+                                    <option value="">Select State</option>
+                                    {statesList.map((state) => (
+                                        <option key={state} value={state}>{state}</option>
+                                    ))}
+                                    <option value="other">➕ Other</option>
+                                </select>
+                                {showCustomState && (
+                                    <Input 
+                                        placeholder="Enter State" 
+                                        className="mt-2"
+                                        value={customState}
+                                        onChange={(e) => setCustomState(e.target.value)}
+                                    />
+                                )}
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="city">City</Label>
+                                <select
+                                    id="city"
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={showCustomCity && !showCustomState ? "other" : formData.city}
+                                    onChange={(e) => handleCityChange(e.target.value)}
+                                    disabled={!formData.state && !showCustomState}
+                                >
+                                    <option value="">
+                                        {!formData.state && !showCustomState ? "Select State First" : showCustomState ? "Enter City Below" : "Select City"}
+                                    </option>
+                                    {!showCustomState && availableCities.map((city) => (
+                                        <option key={city} value={city}>{city}</option>
+                                    ))}
+                                    {!showCustomState && formData.state && (
+                                        <option value="other">➕ Other</option>
+                                    )}
+                                </select>
+                                {(showCustomCity || showCustomState) && (
+                                    <Input 
+                                        placeholder="Enter City" 
+                                        className="mt-2"
+                                        value={customCity}
+                                        onChange={(e) => setCustomCity(e.target.value)}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <Button disabled={loading} type="submit" className="w-full btn-primary-custom h-12 text-base mt-4">
+                      {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : 'Submit Request'}
+                    </Button>
+                  </form>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 // --- COMPREHENSIVE SERVICES DATABASE ---
 const allServicesData: { [key: string]: any } = {
@@ -68,50 +446,10 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     methodology: [
-      { 
-        phase: "Discovery & Assessment",
-        duration: "1-2 weeks",
-        activities: [
-          "Current state analysis",
-          "Stakeholder interviews",
-          "Infrastructure audit",
-          "Gap analysis",
-          "Risk assessment"
-        ]
-      },
-      { 
-        phase: "Strategy Development",
-        duration: "2-3 weeks",
-        activities: [
-          "Future state design",
-          "Technology roadmap creation",
-          "Vendor evaluation",
-          "Budget planning",
-          "Business case development"
-        ]
-      },
-      { 
-        phase: "Implementation Planning",
-        duration: "1-2 weeks",
-        activities: [
-          "Project planning",
-          "Resource allocation",
-          "Timeline development",
-          "Risk mitigation planning",
-          "Change management strategy"
-        ]
-      },
-      { 
-        phase: "Execution Support",
-        duration: "Ongoing",
-        activities: [
-          "Project oversight",
-          "Vendor coordination",
-          "Quality assurance",
-          "Progress monitoring",
-          "Continuous optimization"
-        ]
-      }
+      { phase: "Discovery & Assessment", duration: "1-2 weeks", activities: ["Current state analysis", "Stakeholder interviews", "Infrastructure audit", "Gap analysis", "Risk assessment"] },
+      { phase: "Strategy Development", duration: "2-3 weeks", activities: ["Future state design", "Technology roadmap creation", "Vendor evaluation", "Budget planning", "Business case development"] },
+      { phase: "Implementation Planning", duration: "1-2 weeks", activities: ["Project planning", "Resource allocation", "Timeline development", "Risk mitigation planning", "Change management strategy"] },
+      { phase: "Execution Support", duration: "Ongoing", activities: ["Project oversight", "Vendor coordination", "Quality assurance", "Progress monitoring", "Continuous optimization"] }
     ],
 
     deliverables: [
@@ -126,82 +464,27 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     industries: [
-      { 
-        name: "Corporates", 
-        icon: <Building />, 
-        focus: "Enterprise architecture, digital workplace, cloud strategy" 
-      },
-      { 
-        name: "Education", 
-        icon: <GraduationCap />, 
-        focus: "E-learning infrastructure, campus networks, student portals" 
-      },
-      { 
-        name: "Government", 
-        icon: <Landmark />, 
-        focus: "Compliance, security, citizen services digitization" 
-      },
-      { 
-        name: "Data Centers", 
-        icon: <Server />, 
-        focus: "Capacity planning, optimization, migration strategies" 
-      },
+      { name: "Corporates", icon: <Building />, focus: "Enterprise architecture, digital workplace, cloud strategy" },
+      { name: "Education", icon: <GraduationCap />, focus: "E-learning infrastructure, campus networks, student portals" },
+      { name: "Government", icon: <Landmark />, focus: "Compliance, security, citizen services digitization" },
+      { name: "Data Centers", icon: <Server />, focus: "Capacity planning, optimization, migration strategies" },
     ],
 
     process: [
-      { 
-        step: 1, 
-        title: "Initial Consultation", 
-        description: "Free consultation to understand your challenges and objectives" 
-      },
-      { 
-        step: 2, 
-        title: "Engagement Planning", 
-        description: "Define scope, timeline, and deliverables for the consulting engagement" 
-      },
-      { 
-        step: 3, 
-        title: "Assessment & Analysis", 
-        description: "Comprehensive review of your current IT environment and business needs" 
-      },
-      { 
-        step: 4, 
-        title: "Strategy Development", 
-        description: "Create customized recommendations and implementation roadmap" 
-      },
-      { 
-        step: 5, 
-        title: "Presentation & Approval", 
-        description: "Present findings and recommendations to stakeholders" 
-      },
-      { 
-        step: 6, 
-        title: "Implementation Support", 
-        description: "Ongoing guidance during implementation phase" 
-      },
+      { step: 1, title: "Initial Consultation", description: "Free consultation to understand your challenges and objectives" },
+      { step: 2, title: "Engagement Planning", description: "Define scope, timeline, and deliverables for the consulting engagement" },
+      { step: 3, title: "Assessment & Analysis", description: "Comprehensive review of your current IT environment and business needs" },
+      { step: 4, title: "Strategy Development", description: "Create customized recommendations and implementation roadmap" },
+      { step: 5, title: "Presentation & Approval", description: "Present findings and recommendations to stakeholders" },
+      { step: 6, title: "Implementation Support", description: "Ongoing guidance during implementation phase" },
     ],
 
     faqs: [
-      { 
-        question: "What is the typical duration of a consulting engagement?", 
-        answer: "Most consulting engagements range from 4-12 weeks, depending on scope and complexity. Quick assessments can be done in 1-2 weeks, while comprehensive transformation planning may take 3-6 months." 
-      },
-      { 
-        question: "Do you provide implementation services or just consulting?", 
-        answer: "We offer both! Our consulting services can stand alone or be combined with our implementation services. Many clients prefer our end-to-end approach where we not only plan but also execute the recommended solutions." 
-      },
-      { 
-        question: "How do you ensure vendor neutrality in your recommendations?", 
-        answer: "While we have partnerships with major vendors, our recommendations are always based on what's best for your business. We evaluate multiple vendors objectively and can work with your existing vendor relationships." 
-      },
-      { 
-        question: "What industries do you specialize in?", 
-        answer: "We have deep expertise in corporates, education, government, data centers, and SMEs. Our consultants have industry-specific knowledge and understand unique regulatory and operational requirements." 
-      },
-      { 
-        question: "Can you help with IT budget planning?", 
-        answer: "Absolutely! We help organizations optimize their IT spending, create multi-year budget forecasts, identify cost-saving opportunities, and justify technology investments with clear ROI analysis." 
-      },
+      { question: "What is the typical duration of a consulting engagement?", answer: "Most consulting engagements range from 4-12 weeks, depending on scope and complexity. Quick assessments can be done in 1-2 weeks, while comprehensive transformation planning may take 3-6 months." },
+      { question: "Do you provide implementation services or just consulting?", answer: "We offer both! Our consulting services can stand alone or be combined with our implementation services. Many clients prefer our end-to-end approach where we not only plan but also execute the recommended solutions." },
+      { question: "How do you ensure vendor neutrality in your recommendations?", answer: "While we have partnerships with major vendors, our recommendations are always based on what's best for your business. We evaluate multiple vendors objectively and can work with your existing vendor relationships." },
+      { question: "What industries do you specialize in?", answer: "We have deep expertise in corporates, education, government, data centers, and SMEs. Our consultants have industry-specific knowledge and understand unique regulatory and operational requirements." },
+      { question: "Can you help with IT budget planning?", answer: "Absolutely! We help organizations optimize their IT spending, create multi-year budget forecasts, identify cost-saving opportunities, and justify technology investments with clear ROI analysis." },
     ],
 
     pricing: "Custom pricing based on engagement scope",
@@ -214,7 +497,7 @@ const allServicesData: { [key: string]: any } = {
     tagline: "Build a network that powers your business at the speed of innovation.",
     description: "We design, implement, and manage enterprise-grade network infrastructure that delivers reliable, secure, and high-speed connectivity. Our networking solutions leverage best-in-class hardware from Dell and Cisco to create scalable networks that support your current needs while being ready for future growth.",
     extendedDescription: "Modern businesses require networks that are not just fast and reliable, but also secure, flexible, and intelligent. Our enterprise networking services encompass everything from initial network design and architecture to implementation, optimization, and ongoing management. We ensure your network infrastructure supports critical business applications, cloud services, unified communications, and emerging technologies like IoT and AI.",
-    image: "/network.webp",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&q=80&w=1920",
     
     serviceFeatures: [
       { name: "Network Design & Architecture", icon: <Network />, desc: "Custom network topology planning" },
@@ -235,50 +518,10 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     methodology: [
-      { 
-        phase: "Network Assessment",
-        duration: "1 week",
-        activities: [
-          "Current network analysis",
-          "Performance baseline",
-          "Bottleneck identification",
-          "Security audit",
-          "Capacity planning"
-        ]
-      },
-      { 
-        phase: "Design & Architecture",
-        duration: "2 weeks",
-        activities: [
-          "Topology design",
-          "VLAN planning",
-          "IP addressing scheme",
-          "Redundancy design",
-          "Security architecture"
-        ]
-      },
-      { 
-        phase: "Implementation",
-        duration: "2-4 weeks",
-        activities: [
-          "Hardware installation",
-          "Configuration deployment",
-          "Cable infrastructure",
-          "Testing & validation",
-          "Documentation"
-        ]
-      },
-      { 
-        phase: "Optimization & Support",
-        duration: "Ongoing",
-        activities: [
-          "Performance tuning",
-          "Monitoring setup",
-          "Troubleshooting",
-          "Capacity management",
-          "Upgrades & patches"
-        ]
-      }
+      { phase: "Network Assessment", duration: "1 week", activities: ["Current network analysis", "Performance baseline", "Bottleneck identification", "Security audit", "Capacity planning"] },
+      { phase: "Design & Architecture", duration: "2 weeks", activities: ["Topology design", "VLAN planning", "IP addressing scheme", "Redundancy design", "Security architecture"] },
+      { phase: "Implementation", duration: "2-4 weeks", activities: ["Hardware installation", "Configuration deployment", "Cable infrastructure", "Testing & validation", "Documentation"] },
+      { phase: "Optimization & Support", duration: "Ongoing", activities: ["Performance tuning", "Monitoring setup", "Troubleshooting", "Capacity management", "Upgrades & patches"] }
     ],
 
     deliverables: [
@@ -293,82 +536,27 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     industries: [
-      { 
-        name: "Corporate Offices", 
-        icon: <Building />, 
-        focus: "High-density switching, WiFi, unified communications" 
-      },
-      { 
-        name: "Educational Campuses", 
-        icon: <GraduationCap />, 
-        focus: "Campus-wide WiFi, BYOD support, content filtering" 
-      },
-      { 
-        name: "Data Centers", 
-        icon: <Server />, 
-        focus: "Core switching, high-speed interconnects, SDN" 
-      },
-      { 
-        name: "Healthcare", 
-        icon: <Shield />, 
-        focus: "Secure clinical networks, medical device integration" 
-      },
+      { name: "Corporate Offices", icon: <Building />, focus: "High-density switching, WiFi, unified communications" },
+      { name: "Educational Campuses", icon: <GraduationCap />, focus: "Campus-wide WiFi, BYOD support, content filtering" },
+      { name: "Data Centers", icon: <Server />, focus: "Core switching, high-speed interconnects, SDN" },
+      { name: "Healthcare", icon: <Shield />, focus: "Secure clinical networks, medical device integration" },
     ],
 
     process: [
-      { 
-        step: 1, 
-        title: "Requirements Gathering", 
-        description: "Understand your business needs, applications, and growth plans" 
-      },
-      { 
-        step: 2, 
-        title: "Network Assessment", 
-        description: "Analyze current infrastructure and identify improvement opportunities" 
-      },
-      { 
-        step: 3, 
-        title: "Solution Design", 
-        description: "Create detailed network architecture and implementation plan" 
-      },
-      { 
-        step: 4, 
-        title: "Hardware Procurement", 
-        description: "Source equipment from authorized Dell and Cisco partners" 
-      },
-      { 
-        step: 5, 
-        title: "Professional Installation", 
-        description: "Deploy network infrastructure with minimal business disruption" 
-      },
-      { 
-        step: 6, 
-        title: "Testing & Handover", 
-        description: "Comprehensive testing, documentation, and knowledge transfer" 
-      },
+      { step: 1, title: "Requirements Gathering", description: "Understand your business needs, applications, and growth plans" },
+      { step: 2, title: "Network Assessment", description: "Analyze current infrastructure and identify improvement opportunities" },
+      { step: 3, title: "Solution Design", description: "Create detailed network architecture and implementation plan" },
+      { step: 4, title: "Hardware Procurement", description: "Source equipment from authorized Dell and Cisco partners" },
+      { step: 5, title: "Professional Installation", description: "Deploy network infrastructure with minimal business disruption" },
+      { step: 6, title: "Testing & Handover", description: "Comprehensive testing, documentation, and knowledge transfer" },
     ],
 
     faqs: [
-      { 
-        question: "How long does a network implementation take?", 
-        answer: "Small office networks (20-50 users) typically take 1-2 weeks. Medium enterprises (100-500 users) require 3-6 weeks. Large deployments may take 2-3 months. We always work to minimize disruption to your operations." 
-      },
-      { 
-        question: "Can you upgrade our existing network or do we need to start fresh?", 
-        answer: "We can absolutely work with your existing infrastructure! We'll assess what can be retained, upgraded, or repurposed, helping you maximize your existing investments while modernizing where needed." 
-      },
-      { 
-        question: "Do you provide ongoing network management?", 
-        answer: "Yes! We offer comprehensive managed network services including 24/7 monitoring, proactive maintenance, troubleshooting, and regular optimization to ensure peak performance." 
-      },
-      { 
-        question: "What vendors do you work with?", 
-        answer: "We're authorized partners for Dell and Cisco, the industry leaders in networking. We can also work with existing equipment from other vendors to ensure seamless integration." 
-      },
-      { 
-        question: "How do you ensure network security?", 
-        answer: "Security is built into every layer of our network designs including firewalls, network segmentation, access controls, encryption, and continuous monitoring for threats." 
-      },
+      { question: "How long does a network implementation take?", answer: "Small office networks (20-50 users) typically take 1-2 weeks. Medium enterprises (100-500 users) require 3-6 weeks. Large deployments may take 2-3 months. We always work to minimize disruption to your operations." },
+      { question: "Can you upgrade our existing network or do we need to start fresh?", answer: "We can absolutely work with your existing infrastructure! We'll assess what can be retained, upgraded, or repurposed, helping you maximize your existing investments while modernizing where needed." },
+      { question: "Do you provide ongoing network management?", answer: "Yes! We offer comprehensive managed network services including 24/7 monitoring, proactive maintenance, troubleshooting, and regular optimization to ensure peak performance." },
+      { question: "What vendors do you work with?", answer: "We're authorized partners for Dell and Cisco, the industry leaders in networking. We can also work with existing equipment from other vendors to ensure seamless integration." },
+      { question: "How do you ensure network security?", answer: "Security is built into every layer of our network designs including firewalls, network segmentation, access controls, encryption, and continuous monitoring for threats." },
     ],
 
     pricing: "Custom pricing based on engagement scope",
@@ -460,82 +648,27 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     industries: [
-      { 
-        name: "Enterprises", 
-        icon: <Building />, 
-        focus: "SAP on cloud, enterprise applications, hybrid cloud" 
-      },
-      { 
-        name: "Startups & SMEs", 
-        icon: <Zap />, 
-        focus: "Cloud-native development, serverless, cost optimization" 
-      },
-      { 
-        name: "Education", 
-        icon: <GraduationCap />, 
-        focus: "Virtual classrooms, learning management systems, collaboration" 
-      },
-      { 
-        name: "Healthcare", 
-        icon: <Shield />, 
-        focus: "HIPAA compliance, medical imaging, telemedicine platforms" 
-      },
+      { name: "Enterprises", icon: <Building />, focus: "SAP on cloud, enterprise applications, hybrid cloud" },
+      { name: "Startups & SMEs", icon: <Zap />, focus: "Cloud-native development, serverless, cost optimization" },
+      { name: "Education", icon: <GraduationCap />, focus: "Virtual classrooms, learning management systems, collaboration" },
+      { name: "Healthcare", icon: <Shield />, focus: "HIPAA compliance, medical imaging, telemedicine platforms" },
     ],
 
     process: [
-      { 
-        step: 1, 
-        title: "Discovery Workshop", 
-        description: "Understand your applications, data, and business objectives" 
-      },
-      { 
-        step: 2, 
-        title: "Assessment & Planning", 
-        description: "Evaluate cloud readiness and develop migration strategy" 
-      },
-      { 
-        step: 3, 
-        title: "Proof of Concept", 
-        description: "Pilot migration with non-critical workloads" 
-      },
-      { 
-        step: 4, 
-        title: "Migration Execution", 
-        description: "Migrate applications and data with minimal downtime" 
-      },
-      { 
-        step: 5, 
-        title: "Testing & Optimization", 
-        description: "Validate performance and optimize for cloud" 
-      },
-      { 
-        step: 6, 
-        title: "Handover & Support", 
-        description: "Knowledge transfer and ongoing management" 
-      },
+      { step: 1, title: "Discovery Workshop", description: "Understand your applications, data, and business objectives" },
+      { step: 2, title: "Assessment & Planning", description: "Evaluate cloud readiness and develop migration strategy" },
+      { step: 3, title: "Proof of Concept", description: "Pilot migration with non-critical workloads" },
+      { step: 4, title: "Migration Execution", description: "Migrate applications and data with minimal downtime" },
+      { step: 5, title: "Testing & Optimization", description: "Validate performance and optimize for cloud" },
+      { step: 6, title: "Handover & Support", description: "Knowledge transfer and ongoing management" },
     ],
 
     faqs: [
-      { 
-        question: "Which cloud platform should we choose - AWS, Azure, or Google Cloud?", 
-        answer: "The choice depends on your specific needs. AWS offers the broadest service portfolio, Azure integrates seamlessly with Microsoft products, and Google Cloud excels in data analytics and AI. We'll help you choose based on your requirements, existing technology stack, and budget." 
-      },
-      { 
-        question: "How long does cloud migration take?", 
-        answer: "Simple migrations (like email to Microsoft 365) can be done in days. Small application migrations take 4-8 weeks. Large enterprise migrations typically require 3-6 months. We use phased approaches to minimize risk and disruption." 
-      },
-      { 
-        question: "What about data security in the cloud?", 
-        answer: "Cloud providers offer enterprise-grade security that often exceeds on-premise capabilities. We implement additional layers including encryption, access controls, monitoring, and compliance frameworks to ensure your data remains secure." 
-      },
-      { 
-        question: "Will cloud migration disrupt our operations?", 
-        answer: "We use proven migration strategies to minimize disruption. Most migrations are done during off-hours, and we often run parallel systems during transition. Critical applications can be migrated with near-zero downtime using advanced techniques." 
-      },
-      { 
-        question: "How do we control cloud costs?", 
-        answer: "We implement FinOps practices including right-sizing resources, reserved instances, auto-scaling, and continuous monitoring. Most clients see 30-40% cost reduction through optimization after migration." 
-      },
+      { question: "Which cloud platform should we choose - AWS, Azure, or Google Cloud?", answer: "The choice depends on your specific needs. AWS offers the broadest service portfolio, Azure integrates seamlessly with Microsoft products, and Google Cloud excels in data analytics and AI. We'll help you choose based on your requirements, existing technology stack, and budget." },
+      { question: "How long does cloud migration take?", answer: "Simple migrations (like email to Microsoft 365) can be done in days. Small application migrations take 4-8 weeks. Large enterprise migrations typically require 3-6 months. We use phased approaches to minimize risk and disruption." },
+      { question: "What about data security in the cloud?", answer: "Cloud providers offer enterprise-grade security that often exceeds on-premise capabilities. We implement additional layers including encryption, access controls, monitoring, and compliance frameworks to ensure your data remains secure." },
+      { question: "Will cloud migration disrupt our operations?", answer: "We use proven migration strategies to minimize disruption. Most migrations are done during off-hours, and we often run parallel systems during transition. Critical applications can be migrated with near-zero downtime using advanced techniques." },
+      { question: "How do we control cloud costs?", answer: "We implement FinOps practices including right-sizing resources, reserved instances, auto-scaling, and continuous monitoring. Most clients see 30-40% cost reduction through optimization after migration." },
     ],
 
     pricing: " Custom pricing based on Migration projects scope",
@@ -627,82 +760,27 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     industries: [
-      { 
-        name: "Financial Services", 
-        icon: <Lock />, 
-        focus: "PCI DSS compliance, fraud prevention, data protection" 
-      },
-      { 
-        name: "Healthcare", 
-        icon: <Shield />, 
-        focus: "HIPAA compliance, patient data protection, medical device security" 
-      },
-      { 
-        name: "Government", 
-        icon: <Landmark />, 
-        focus: "Critical infrastructure protection, data sovereignty, compliance" 
-      },
-      { 
-        name: "E-commerce", 
-        icon: <Building />, 
-        focus: "Payment security, customer data protection, DDoS prevention" 
-      },
+      { name: "Financial Services", icon: <Lock />, focus: "PCI DSS compliance, fraud prevention, data protection" },
+      { name: "Healthcare", icon: <Shield />, focus: "HIPAA compliance, patient data protection, medical device security" },
+      { name: "Government", icon: <Landmark />, focus: "Critical infrastructure protection, data sovereignty, compliance" },
+      { name: "E-commerce", icon: <Building />, focus: "Payment security, customer data protection, DDoS prevention" },
     ],
 
     process: [
-      { 
-        step: 1, 
-        title: "Security Consultation", 
-        description: "Understand your security concerns and compliance requirements" 
-      },
-      { 
-        step: 2, 
-        title: "Risk Assessment", 
-        description: "Identify vulnerabilities and quantify security risks" 
-      },
-      { 
-        step: 3, 
-        title: "Solution Design", 
-        description: "Develop comprehensive security architecture" 
-      },
-      { 
-        step: 4, 
-        title: "Security Implementation", 
-        description: "Deploy security controls and technologies" 
-      },
-      { 
-        step: 5, 
-        title: "Testing & Validation", 
-        description: "Verify security effectiveness through testing" 
-      },
-      { 
-        step: 6, 
-        title: "Continuous Monitoring", 
-        description: "24/7 security operations and threat response" 
-      },
+      { step: 1, title: "Security Consultation", description: "Understand your security concerns and compliance requirements" },
+      { step: 2, title: "Risk Assessment", description: "Identify vulnerabilities and quantify security risks" },
+      { step: 3, title: "Solution Design", description: "Develop comprehensive security architecture" },
+      { step: 4, title: "Security Implementation", description: "Deploy security controls and technologies" },
+      { step: 5, title: "Testing & Validation", description: "Verify security effectiveness through testing" },
+      { step: 6, title: "Continuous Monitoring", description: "24/7 security operations and threat response" },
     ],
 
     faqs: [
-      { 
-        question: "What types of cyber threats do you protect against?", 
-        answer: "We protect against all major threats including malware, ransomware, phishing, DDoS attacks, data breaches, insider threats, and zero-day exploits. Our multi-layered approach ensures comprehensive protection." 
-      },
-      { 
-        question: "Do you provide 24/7 security monitoring?", 
-        answer: "Yes! Our Security Operations Center (SOC) provides round-the-clock monitoring, threat detection, and incident response. We use advanced SIEM tools and threat intelligence to identify and respond to threats in real-time." 
-      },
-      { 
-        question: "How do you help with compliance?", 
-        answer: "We help achieve and maintain compliance with regulations like GDPR, HIPAA, PCI DSS, and others. This includes gap assessments, control implementation, documentation, and audit support." 
-      },
-      { 
-        question: "What happens during a security incident?", 
-        answer: "Our incident response team immediately activates to contain the threat, minimize damage, preserve evidence, and restore normal operations. We follow established playbooks and keep you informed throughout the process." 
-      },
-      { 
-        question: "Can you secure our cloud environment?", 
-        answer: "Absolutely! We provide comprehensive cloud security including identity management, data encryption, network security, compliance monitoring, and cloud-native security tools for AWS, Azure, and Google Cloud." 
-      },
+      { question: "What types of cyber threats do you protect against?", answer: "We protect against all major threats including malware, ransomware, phishing, DDoS attacks, data breaches, insider threats, and zero-day exploits. Our multi-layered approach ensures comprehensive protection." },
+      { question: "Do you provide 24/7 security monitoring?", answer: "Yes! Our Security Operations Center (SOC) provides round-the-clock monitoring, threat detection, and incident response. We use advanced SIEM tools and threat intelligence to identify and respond to threats in real-time." },
+      { question: "How do you help with compliance?", answer: "We help achieve and maintain compliance with regulations like GDPR, HIPAA, PCI DSS, and others. This includes gap assessments, control implementation, documentation, and audit support." },
+      { question: "What happens during a security incident?", answer: "Our incident response team immediately activates to contain the threat, minimize damage, preserve evidence, and restore normal operations. We follow established playbooks and keep you informed throughout the process." },
+      { question: "Can you secure our cloud environment?", answer: "Absolutely! We provide comprehensive cloud security including identity management, data encryption, network security, compliance monitoring, and cloud-native security tools for AWS, Azure, and Google Cloud." },
     ],
 
     pricing: " Custom pricing based on Security services scope",
@@ -736,50 +814,10 @@ const allServicesData: { [key: string]: any } = {
     ],
 
     methodology: [
-      { 
-        phase: "Onboarding",
-        duration: "1 week",
-        activities: [
-          "Asset inventory",
-          "Documentation review",
-          "SLA definition",
-          "Contact setup",
-          "Knowledge transfer"
-        ]
-      },
-      { 
-        phase: "Preventive Maintenance",
-        duration: "Quarterly",
-        activities: [
-          "Health checks",
-          "Firmware updates",
-          "Performance tuning",
-          "Cleaning & inspection",
-          "Documentation updates"
-        ]
-      },
-      { 
-        phase: "Monitoring & Support",
-        duration: "24/7",
-        activities: [
-          "Real-time monitoring",
-          "Alert management",
-          "Incident response",
-          "Remote troubleshooting",
-          "Escalation management"
-        ]
-      },
-      { 
-        phase: "Reporting & Review",
-        duration: "Monthly",
-        activities: [
-          "Performance reports",
-          "Incident analysis",
-          "SLA compliance",
-          "Improvement recommendations",
-          "Review meetings"
-        ]
-      }
+      { phase: "Onboarding", duration: "1 week", activities: ["Asset inventory", "Documentation review", "SLA definition", "Contact setup", "Knowledge transfer"] },
+      { phase: "Preventive Maintenance", duration: "Quarterly", activities: ["Health checks", "Firmware updates", "Performance tuning", "Cleaning & inspection", "Documentation updates"] },
+      { phase: "Monitoring & Support", duration: "24/7", activities: ["Real-time monitoring", "Alert management", "Incident response", "Remote troubleshooting", "Escalation management"] },
+      { phase: "Reporting & Review", duration: "Monthly", activities: ["Performance reports", "Incident analysis", "SLA compliance", "Improvement recommendations", "Review meetings"] }
     ],
 
     deliverables: [
@@ -793,93 +831,35 @@ const allServicesData: { [key: string]: any } = {
       "Annual health assessments"
     ],
 
-   
     industries: [
-      { 
-        name: "Corporate IT", 
-        icon: <Building />, 
-        focus: "Servers, networks, endpoints, applications" 
-      },
-      { 
-        name: "Data Centers", 
-        icon: <Server />, 
-        focus: "24/7 infrastructure monitoring and support" 
-      },
-      { 
-        name: "Educational Institutions", 
-        icon: <GraduationCap />, 
-        focus: "Campus IT infrastructure, labs, digital classrooms" 
-      },
-      { 
-        name: "Healthcare Facilities", 
-        icon: <Shield />, 
-        focus: "Medical systems, PACS, EMR infrastructure" 
-      },
+      { name: "Corporate IT", icon: <Building />, focus: "Servers, networks, endpoints, applications" },
+      { name: "Data Centers", icon: <Server />, focus: "24/7 infrastructure monitoring and support" },
+      { name: "Educational Institutions", icon: <GraduationCap />, focus: "Campus IT infrastructure, labs, digital classrooms" },
+      { name: "Healthcare Facilities", icon: <Shield />, focus: "Medical systems, PACS, EMR infrastructure" },
     ],
 
     process: [
-      { 
-        step: 1, 
-        title: "Initial Assessment", 
-        description: "Evaluate your infrastructure and support requirements" 
-      },
-      { 
-        step: 2, 
-        title: "AMC Proposal", 
-        description: "Custom support package based on your needs" 
-      },
-      { 
-        step: 3, 
-        title: "Contract Finalization", 
-        description: "Define SLAs, coverage, and terms" 
-      },
-      { 
-        step: 4, 
-        title: "Service Activation", 
-        description: "Onboarding and knowledge transfer" 
-      },
-      { 
-        step: 5, 
-        title: "Continuous Support", 
-        description: "24/7 monitoring and support delivery" 
-      },
-      { 
-        step: 6, 
-        title: "Regular Reviews", 
-        description: "Performance reviews and optimization" 
-      },
+      { step: 1, title: "Initial Assessment", description: "Evaluate your infrastructure and support requirements" },
+      { step: 2, title: "AMC Proposal", description: "Custom support package based on your needs" },
+      { step: 3, title: "Contract Finalization", description: "Define SLAs, coverage, and terms" },
+      { step: 4, title: "Service Activation", description: "Onboarding and knowledge transfer" },
+      { step: 5, title: "Continuous Support", description: "24/7 monitoring and support delivery" },
+      { step: 6, title: "Regular Reviews", description: "Performance reviews and optimization" },
     ],
 
     faqs: [
-      { 
-        question: "What's included in an AMC?", 
-        answer: "AMC includes preventive maintenance, break-fix support, remote assistance, onsite visits (as per SLA), spare parts (depending on contract type), firmware updates, and performance monitoring. Comprehensive contracts also include replacement guarantees." 
-      },
-      { 
-        question: "What are your response time SLAs?", 
-        answer: "Response times vary by support level: Enterprise (30 min), Premium (1 hour), Standard (2 hours), Basic (4 hours). Critical issues get priority response. Onsite support arrival times depend on location and contract type." 
-      },
-      { 
-        question: "Do you support multi-vendor environments?", 
-        answer: "Yes! While we specialize in Dell, Cisco, and Microsoft technologies, our engineers are trained to support multi-vendor environments. We can maintain equipment from most major vendors." 
-      },
-      { 
-        question: "Can we upgrade our support level mid-contract?", 
-        answer: "Absolutely! You can upgrade your support level anytime. Downgrades can be done at contract renewal. We regularly review your needs to ensure you have the right level of support." 
-      },
-      { 
-        question: "How do you handle spare parts?", 
-        answer: "For Premium and Enterprise contracts, we maintain a local spare parts inventory for critical components. For Standard contracts, we ensure next-business-day parts availability. Part costs may be additional depending on contract type." 
-      },
+      { question: "What's included in an AMC?", answer: "AMC includes preventive maintenance, break-fix support, remote assistance, onsite visits (as per SLA), spare parts (depending on contract type), firmware updates, and performance monitoring. Comprehensive contracts also include replacement guarantees." },
+      { question: "What are your response time SLAs?", answer: "Response times vary by support level: Enterprise (30 min), Premium (1 hour), Standard (2 hours), Basic (4 hours). Critical issues get priority response. Onsite support arrival times depend on location and contract type." },
+      { question: "Do you support multi-vendor environments?", answer: "Yes! While we specialize in Dell, Cisco, and Microsoft technologies, our engineers are trained to support multi-vendor environments. We can maintain equipment from most major vendors." },
+      { question: "Can we upgrade our support level mid-contract?", answer: "Absolutely! You can upgrade your support level anytime. Downgrades can be done at contract renewal. We regularly review your needs to ensure you have the right level of support." },
+      { question: "How do you handle spare parts?", answer: "For Premium and Enterprise contracts, we maintain a local spare parts inventory for critical components. For Standard contracts, we ensure next-business-day parts availability. Part costs may be additional depending on contract type." },
     ],
 
     pricing: "Custom pricing based on AMC scope",
     certifications: ["ISO 20000", "ITIL Certified", "OEM Authorized Support"],
   },
 };
-
-// --- COMPONENT FUNCTIONS (Blue Theme) ---
-
+// --- COMPONENT FUNCTIONS ---
 const ServiceFeature = ({ icon, name, desc }: { icon: React.ReactNode, name: string, desc?: string }) => (
   <div className="flex items-start gap-4 p-6 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-lg transition-all group bg-white">
     <div className="flex-shrink-0 w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -931,7 +911,7 @@ const ProcessStep = ({ step, title, description }: { step: number, title: string
 );
 
 const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="border-2 border-gray-200 rounded-xl overflow-hidden hover:border-primary-300 transition-colors bg-white">
       <button
@@ -962,10 +942,6 @@ const MethodologyPhase = ({ phase, duration, activities }: any) => (
   <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-primary-400 transition-all hover:shadow-lg">
     <div className="flex items-center justify-between mb-4">
       <h4 className="font-bold text-gray-900 text-lg">{phase}</h4>
-      {/* <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold">
-        <Clock className="w-4 h-4" />
-        {duration}
-      </span> */}
     </div>
     <ul className="space-y-2">
       {activities.map((activity: string, idx: number) => (
@@ -996,21 +972,10 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
   const { slug } = params;
   const service = allServicesData[slug];
 
-  if (!service) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen section text-center px-4 bg-gradient-to-b from-blue-50 to-white">
-        <div className="w-24 h-24 rounded-full bg-primary-gradient flex items-center justify-center mb-6 shadow-glow">
-          <Settings className="w-12 h-12 text-white" />
-        </div>
-        <h1 className="h1 text-gray-800 mb-4">Service Not Found</h1>
-        <p className="p-large mb-8 text-gray-600 max-w-md">The service you are looking for does not exist or has been moved.</p>
-        <Link href="/services" className="btn-primary">
-          <ArrowRight className="w-5 h-5" />
-          Browse All Services
-        </Link>
-      </div>
-    );
-  }
+  // ✅ MODAL STATE - Yeh important hai!
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+
 
   const { 
     title, 
@@ -1033,11 +998,15 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
   return (
     <div className="w-full bg-white">
       
-      {/* ================================================= */}
-      {/*                  HERO SECTION                     */}
-      {/* ================================================= */}
+      {/* ✅ ENQUIRY MODAL */}
+      <EnquiryModal
+        isOpen={isQuoteModalOpen}
+        onClose={() => setIsQuoteModalOpen(false)}
+        pageContext={title}
+      />
+
+      {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-primary-gradient">
-        {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -1045,14 +1014,12 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
           }}></div>
         </div>
 
-        {/* Floating Gradient Orbs */}
         <div className="absolute top-20 right-10 w-72 h-72 bg-blue-400/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl"></div>
 
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
-            {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1076,19 +1043,18 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
                 {tagline}
               </p>
 
-              {/* <div className="flex flex-wrap gap-4">
-                <Link href="/contact" className="btn-gradient shadow-2xl bg-white text-primary-500 hover:bg-blue-50">
+              {/* ✅ HERO BUTTON */}
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  onClick={() => setIsQuoteModalOpen(true)}
+                  className=" shadow-2xl bg-white text-primary-500 hover:bg-blue-50"
+                >
                   <Phone className="w-5 h-5" />
                   Request Service Quote
-                </Link>
-                <button className="btn-outline border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm">
-                  <PlayCircle className="w-5 h-5" />
-                  Watch Demo
-                </button>
-              </div> */}
+                </Button>
+              </div>
             </motion.div>
 
-            {/* Right Image */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1107,7 +1073,6 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"></div>
               </div>
               
-              {/* Floating Stats Badge */}
               <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl p-6 max-w-[200px]">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -1133,13 +1098,11 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
         </div>
       </div>
 
-      {/* ================================================= */}
-      {/*                MAIN CONTENT AREA                  */}
-      {/* ================================================= */}
+      {/* MAIN CONTENT */}
       <section className="section bg-gradient-to-b from-white to-blue-50">
         <div className="container-custom">
           
-          {/* Service Overview - Full Width */}
+          {/* Service Overview */}
           <div className="grid lg:grid-cols-5 gap-12 mb-20">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1155,7 +1118,6 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
               <p className="p-base text-gray-600 leading-relaxed">{extendedDescription}</p>
             </motion.div>
 
-            {/* Quick Stats Card */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1206,7 +1168,7 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
             </motion.div>
           </div>
 
-          {/* Service Features Grid */}
+          {/* Service Features */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1264,9 +1226,6 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
                   <span>OUR APPROACH</span>
                 </div>
                 <h3 className="h2 text-gray-900 mb-4">Proven Methodology</h3>
-                <p className="p-base text-gray-600 max-w-2xl mx-auto">
-                  A structured approach ensuring successful project delivery
-                </p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {methodology.map((phase: any, index: number) => (
@@ -1276,7 +1235,7 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
             </motion.div>
           )}
 
-          {/* Industries Served */}
+          {/* Industries */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1289,9 +1248,6 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
                 <span>INDUSTRY FOCUS</span>
               </div>
               <h3 className="h2 text-gray-900 mb-4">Industries We Serve</h3>
-              <p className="p-base text-gray-600 max-w-2xl mx-auto">
-                Specialized solutions tailored to your industry requirements
-              </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {industries.map((industry: any, index: number) => (
@@ -1300,7 +1256,7 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
             </div>
           </motion.div>
 
-          {/* Process Steps */}
+          {/* Process */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1345,9 +1301,6 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
             </motion.div>
           )}
 
-          {/* Support Levels */}
-      
-
           {/* FAQs */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1367,11 +1320,38 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
 
         </div>
       </section>
-      
 
-      {/* ================================================= */}
-      {/*                  CTA SECTION                      */}
-     <CTA/>
+      {/* ✅ CTA SECTION */}
+     <section className="section-blue text-center">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="h2 text-white max-w-3xl mx-auto mb-4">
+              Ready to Deploy {title.split(' ')[0]} Solutions?
+            </h2>
+            <p className="p-large max-w-3xl mx-auto mb-8 text-primary-100">
+              Our experts are ready to help you design, deploy, and manage the perfect solution for your business infrastructure.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              {/* ✅ This button also opens modal */}
+              <button 
+                onClick={() => setIsQuoteModalOpen(true)}
+                className="btn-gradient flex items-center gap-2"
+              >
+                Get a Custom Quote
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <Link href="/contact" className="btn-outline bg-white text-primary-500  flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                Call Us Now
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

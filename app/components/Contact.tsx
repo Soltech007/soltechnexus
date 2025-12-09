@@ -11,9 +11,10 @@ import {
   Building,
   User,
   MessageSquare,
-  TimerIcon,
+  Loader2,
 } from "lucide-react";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 // --- Reusable Info Card Component ---
 const InfoCard = ({
@@ -28,7 +29,6 @@ const InfoCard = ({
   href?: string;
 }) => {
   const CardContent = () => (
-    // This uses your existing 'card-hover' style but I've added it directly for clarity
     <div className="flex items-start gap-5 p-6 bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-200 hover:border-primary-300">
       <div className="flex-shrink-0 w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center">
         {React.cloneElement(icon as React.ReactElement, {
@@ -44,12 +44,7 @@ const InfoCard = ({
 
   if (href) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
+      <a href={href} target="_blank" rel="noopener noreferrer" className="block">
         <CardContent />
       </a>
     );
@@ -58,13 +53,7 @@ const InfoCard = ({
 };
 
 // --- Reusable FAQ Item Component ---
-const FAQItem = ({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) => {
+const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="border border-gray-200 rounded-xl overflow-hidden">
@@ -95,6 +84,36 @@ const FAQItem = ({
 
 // --- MAIN CONTACT PAGE COMPONENT ---
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("Message Sent Successfully! 🎉", {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          background: "#10B981",
+          color: "#fff",
+          fontWeight: "500",
+          padding: "16px 24px",
+          borderRadius: "12px",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#10B981",
+        },
+      });
+
+      // Reset form
+      (e.target as HTMLFormElement).reset();
+    }, 1500);
+  };
+
   const faqs = [
     {
       question: "What is the best way to get a quick quote?",
@@ -120,9 +139,10 @@ export default function ContactPage() {
 
   return (
     <div className="w-full bg-white">
-      {/* ================================================= */}
-      {/*                     HERO                         */}
-      {/* ================================================= */}
+      {/* Toast Container */}
+      <Toaster />
+
+      {/* HERO */}
       <section className="section-blue text-center overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
@@ -153,9 +173,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ================================================= */}
-      {/*           CONTACT FORM & INFO SECTION             */}
-      {/* ================================================= */}
+      {/* CONTACT FORM & INFO SECTION */}
       <section className="section bg-gray-50">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -172,7 +190,7 @@ export default function ContactPage() {
                 Our team will get back to you within one business day.
               </p>
 
-              <form action="#" method="POST" className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
                     <label
@@ -182,15 +200,13 @@ export default function ContactPage() {
                       Full Name
                     </label>
                     <div className="relative">
-                      {/* =================================== */}
-                      {/* ====== >>> CSS FIX APPLIED <<< ====== */}
-                      {/* =================================== */}
                       <input
                         type="text"
                         id="name"
                         name="name"
                         required
-                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                        disabled={loading}
+                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
                         placeholder="Your Name"
                       />
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -208,7 +224,8 @@ export default function ContactPage() {
                         type="text"
                         id="company"
                         name="company"
-                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                        disabled={loading}
+                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
                         placeholder="Your Company Name"
                       />
                       <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -229,7 +246,8 @@ export default function ContactPage() {
                       id="email"
                       name="email"
                       required
-                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                      disabled={loading}
+                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
                       placeholder="you@company.com"
                     />
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -248,7 +266,8 @@ export default function ContactPage() {
                       type="tel"
                       id="phone"
                       name="phone"
-                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                      disabled={loading}
+                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
                       placeholder="+91 90235 06084"
                     />
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -268,7 +287,8 @@ export default function ContactPage() {
                       name="message"
                       rows={5}
                       required
-                      className="block w-full px-4 py-3 pl-10 pt-3 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                      disabled={loading}
+                      className="block w-full px-4 py-3 pl-10 pt-3 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
                       placeholder="Tell us about your project..."
                     ></textarea>
                     <MessageSquare className="absolute left-3 top-4 w-5 h-5 text-gray-400" />
@@ -278,10 +298,20 @@ export default function ContactPage() {
                 <div>
                   <button
                     type="submit"
-                    className="btn-primary w-full text-center"
+                    disabled={loading}
+                    className="btn-primary w-full text-center flex items-center justify-center disabled:opacity-50"
                   >
-                    Send Message
-                    <Send className="w-5 h-5 ml-2" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="w-5 h-5 ml-2" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
@@ -296,11 +326,6 @@ export default function ContactPage() {
               className="space-y-8 lg:mt-4"
             >
               <h2 className="h3">Other Ways to Connect</h2>
-              {/* <InfoCard
-                icon={<TimerIcon />}
-                title="Office Timing"
-                content="Monday to Saturday: 9:00 AM to 6:00 PM"
-              /> */}
               <InfoCard
                 icon={<Mail />}
                 title="Email Us"
@@ -316,18 +341,14 @@ export default function ContactPage() {
               <InfoCard
                 icon={<MapPin />}
                 title="Our Office"
-                content="Vibrant Park, Survey No. 182 
-                         Near NH 8, GIDC Phase 1,
-                         Vapi, Gujarat - 396195, India"
+                content="Vibrant Park, Survey No. 182 Near NH 8, GIDC Phase 1, Vapi, Gujarat - 396195, India"
               />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ================================================= */}
-      {/*                   MAP SECTION                     */}
-      {/* ================================================= */}
+      {/* MAP SECTION */}
       <section className="section bg-white">
         <div className="container-custom">
           <motion.div
@@ -362,9 +383,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ================================================= */}
-      {/*                     FAQ SECTION                   */}
-      {/* ================================================= */}
+      {/* FAQ SECTION */}
       <section className="section bg-gray-50">
         <div className="container-custom">
           <motion.div
@@ -386,11 +405,7 @@ export default function ContactPage() {
             className="max-w-3xl mx-auto space-y-4"
           >
             {faqs.map((faq, index) => (
-              <FAQItem
-                key={index}
-                question={faq.question}
-                answer={faq.answer}
-              />
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
             ))}
           </motion.div>
         </div>
