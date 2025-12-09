@@ -146,7 +146,7 @@ export default function Footer() {
       <div className="relative">
         {/* Newsletter Section - Gray Background */}
         <div className="bg-gray-100 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 py-8 sm:py-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -157,8 +157,8 @@ export default function Footer() {
               {/* Newsletter Text */}
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
-                  <div className="w-10 h-10 bg-primary-700 rounded-lg flex items-center justify-center">
-                    <Bell className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10  rounded-lg flex items-center justify-center">
+                    {/* <Bell className="w-5 h-5 text-white" /> */}
                   </div>
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
                     Subscribe to Our Newsletter
