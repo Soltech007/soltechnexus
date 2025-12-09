@@ -27,25 +27,25 @@ interface InfiniteSliderRowProps {
 const row1Brands: Brand[] = [
   {
     name: "AWS",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+    logo: "/logo/aws-171.webp",
     width: 100,
     height: 60,
   },
   {
     name: "Dell",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg",
+    logo: "/logo/dell.webp",
     width: 80,
     height: 60,
   },
   {
     name: "Cisco",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
+    logo: "/logo/Cisco-logo.webp",
     width: 100,
     height: 60,
   },
   {
     name: "Microsoft",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    logo: "/logo/Microsoft.webp",
     width: 120,
     height: 60,
   },
@@ -54,25 +54,25 @@ const row1Brands: Brand[] = [
 const row2Brands: Brand[] = [
   {
     name: "Azure",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg",
+    logo: "/logo/Azure.webp",
     width: 100,
     height: 60,
   },
   {
     name: "BenQ",
-    logo: "/images/partners/benq-logo.webp", // ✅ Use local optimized images
+    logo: "/logo/benq.webp", // ✅ Use local optimized images
     width: 80,
     height: 60,
   },
   {
     name: "Panasonic",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Panasonic_logo_%28Blue%29.svg",
+    logo: "/logo/panasonic.webp",
     width: 120,
     height: 60,
   },
   {
     name: "PeopleLink",
-    logo: "/images/partners/peoplelink-logo.webp", // ✅ Use local optimized images
+    logo: "/logo/peoplelink.webp", // ✅ Use local optimized images
     width: 100,
     height: 60,
   },
