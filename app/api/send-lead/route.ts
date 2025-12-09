@@ -92,7 +92,7 @@ Location: ${body.city || 'N/A'}, ${body.state || 'N/A'}
       mobile_no: body.phone || "",
       city: body.city || "",
       state: body.state || "",
-      lead_owner: "lead@Bizaihacks.com",
+      lead_owner: "lead@soltechnexus.com",
     };
 
     console.log("📤 Sending to ERP:", JSON.stringify(payload, null, 2));
