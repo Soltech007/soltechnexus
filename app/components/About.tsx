@@ -229,7 +229,9 @@ export default function AboutPage() {
       </section>
 
       {/* ================================================= */}
-    <CTA/>
+    <CTA params={{
+        slug: ""
+      }}/>
     </div>
   );
 }
