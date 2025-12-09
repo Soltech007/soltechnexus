@@ -972,6 +972,17 @@ export default function ServiceDetailsPage({ params }: { params: { slug: string 
   const { slug } = params;
   const service = allServicesData[slug];
 
+    if (!service) {
+    return (
+      <div className="py-32 text-center">
+        <h2 className="text-3xl font-bold">Service Not Found</h2>
+        <p className="text-gray-600 mt-2">The service you are looking for does not exist.</p>
+        <Link href="/services" className="text-primary-600 font-semibold mt-4 inline-block">
+          View All Services
+        </Link>
+      </div>
+    );
+  }
   // ✅ MODAL STATE - Yeh important hai!
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
