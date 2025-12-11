@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import SkipLink from "./components/SkipLink"; // New component
 import { cn } from "@/lib/utils";
 import Script from "next/script";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 // ✅ Optimize fonts with next/font
 const inter = Inter({
@@ -123,12 +124,10 @@ export default function RootLayout({
         {/* ✅ Skip Link for Accessibility */}
         <SkipLink />
         
-        <NavbarDemo />
         {/* ✅ Add id and tabIndex for skip link target */}
         <main id="main-content" tabIndex={-1}>
-          {children}
+         <LayoutWrapper>{children}</LayoutWrapper>
         </main>
-        <Footer />
       </body>
     </html>
   );

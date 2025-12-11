@@ -108,7 +108,7 @@ export default function Footer() {
     { href: "/contact", label: "Contact Us" },
     { href: "#", label: "Careers" },
     { href: "#", label: "Case Studies" },
-    { href: "#", label: "Blog" },
+    { href: "/blog", label: "Blog" },
     { href: "#", label: "Become a Partner" },
   ];
 
