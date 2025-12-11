@@ -20,7 +20,9 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   const pathname = request.nextUrl.pathname;
 
@@ -28,6 +30,9 @@ export async function middleware(request: NextRequest) {
     if (!session) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
+  }
+  if (pathname === "/admin" && !session) {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
   if (pathname === "/admin/login" && session) {
