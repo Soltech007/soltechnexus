@@ -76,17 +76,19 @@ const statesAndCities: { [key: string]: string[] } = {
 const statesList = Object.keys(statesAndCities).sort();
 
 // ========================================
-// ENQUIRY MODAL COMPONENT
+// ENQUIRY MODAL COMPONENT (UPDATED WITH WHATSAPP)
 // ========================================
 const EnquiryModal = ({ isOpen, onClose, pageContext }: { isOpen: boolean; onClose: () => void; pageContext: string }) => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   
+  // ✅ 1. ADDED WHATSAPP TO STATE
   const initialFormState = {
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
+    whatsappNo: '', // 🆕 Added
     company: '',
     website: '',
     industry: '',
@@ -154,13 +156,17 @@ const EnquiryModal = ({ isOpen, onClose, pageContext }: { isOpen: boolean; onClo
 
     setLoading(true)
 
+    // ✅ 2. ADDED WHATSAPP TO PAYLOAD
     const finalFormData = {
         ...formData,
+        whatsappNo: formData.whatsappNo, // 🆕 Included in submission
         state: showCustomState ? customState : formData.state,
         city: showCustomCity ? customCity : formData.city,
         source: pageContext,
         servicePage: pageContext
     };
+
+    console.log("📤 Sending Form Data:", finalFormData);
 
     try {
       const response = await fetch("/api/send-lead", {
@@ -268,6 +274,7 @@ const EnquiryModal = ({ isOpen, onClose, pageContext }: { isOpen: boolean; onClo
                         </div>
                     </div>
 
+                    {/* ✅ 3. UPDATED CONTACT INFO SECTION WITH WHATSAPP */}
                     <div>
                         <h4 className="text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wider border-b pb-1">Contact Info</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -287,12 +294,26 @@ const EnquiryModal = ({ isOpen, onClose, pageContext }: { isOpen: boolean; onClo
                                 <Input 
                                     id="phone" 
                                     type="tel" 
-                                    placeholder="+91..."
+                                    placeholder="+91 7777909218"
                                     value={formData.phone}
                                     onChange={(e) => setFormData(prev => ({...prev, phone: e.target.value}))}
                                 />
                             </div>
-                            <div className="space-y-2 sm:col-span-2">
+
+                            {/* 👇 WHATSAPP FIELD ADDED HERE 👇 */}
+                            <div className="space-y-2">
+                                <Label htmlFor="whatsappNo">WhatsApp No</Label>
+                                <Input 
+                                    id="whatsappNo" 
+                                    type="tel" 
+                                    placeholder="+91 7777909218"
+                                    value={formData.whatsappNo}
+                                    onChange={(e) => setFormData(prev => ({...prev, whatsappNo: e.target.value}))}
+                                />
+                            </div>
+                            {/* 👆 WHATSAPP FIELD END 👆 */}
+
+                            <div className="space-y-2">
                                 <Label htmlFor="website">Website (Optional)</Label>
                                 <Input 
                                     id="website" 

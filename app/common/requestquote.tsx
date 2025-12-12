@@ -84,11 +84,13 @@ const EnquiryModal = ({
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   
+  // ✅ 1. WhatsApp No Added to State
   const initialFormState = {
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
+    whatsappNo: '', // 🆕 Added
     company: '',
     website: '',
     industry: '',
@@ -151,7 +153,6 @@ const EnquiryModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Validation
     if (!formData.firstName.trim()) {
       toast.error("First Name is required")
       return
@@ -162,7 +163,6 @@ const EnquiryModal = ({
       return
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast.error("Please enter a valid email address")
@@ -171,12 +171,13 @@ const EnquiryModal = ({
 
     setLoading(true)
 
-    // Prepare Final Data Object
+    // ✅ 2. WhatsApp No Added to Payload
     const finalFormData = {
       firstName: formData.firstName.trim(),
       lastName: formData.lastName.trim(),
       email: formData.email.trim(),
       phone: formData.phone.trim(),
+      whatsappNo: formData.whatsappNo.trim(), // 🆕 Added
       company: formData.company.trim(),
       website: formData.website.trim(),
       industry: formData.industry,
@@ -201,23 +202,17 @@ const EnquiryModal = ({
         body: JSON.stringify(finalFormData),
       });
 
-      console.log("📬 Response Status:", response.status);
-
       let data;
       try {
         data = await response.json();
-        console.log("📬 Response Data:", data);
       } catch (parseError) {
-        console.error("JSON Parse Error:", parseError);
         throw new Error("Invalid response from server");
       }
 
       if (response.ok && data.success) {
-        console.log("✅ Success!");
         setSuccess(true)
         toast.success("Inquiry Sent Successfully! 🎉")
         
-        // Reset form after delay
         setTimeout(() => {
           onClose()
           setSuccess(false)
@@ -228,27 +223,20 @@ const EnquiryModal = ({
           setCustomCity("")
         }, 2500)
       } else {
-        // Show specific error message
-        const errorMessage = data.error || data.message || "Submission failed. Please try again.";
-        console.error("❌ API Error:", errorMessage);
+        const errorMessage = data.error || data.message || "Submission failed.";
         toast.error(errorMessage)
       }
     } catch (error: any) {
       console.error("❌ Network/Fetch Error:", error)
-      toast.error(error.message || "Network error. Please try again.")
+      toast.error(error.message || "Network error.")
     } finally {
       setLoading(false)
     }
   }
 
-  // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
       setFormData(initialFormState)
-      setShowCustomState(false)
-      setShowCustomCity(false)
-      setCustomState("")
-      setCustomCity("")
       setSuccess(false)
       setLoading(false)
     }
@@ -258,7 +246,6 @@ const EnquiryModal = ({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -267,65 +254,42 @@ const EnquiryModal = ({
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
           />
           
-          {/* Modal Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="relative w-full max-w-3xl bg-white border rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
           >
-            {/* Close Button */}
             <div className="absolute right-4 top-4 z-10">
-              <button 
-                onClick={onClose} 
-                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600 hover:text-gray-900"
-              >
+              <button onClick={onClose} className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Scrollable Content */}
             <div className="p-6 sm:p-8 overflow-y-auto">
               {success ? (
-                // ✅ SUCCESS STATE
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center justify-center py-12 text-center space-y-4"
                 >
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", delay: 0.2 }}
-                    className="h-20 w-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center"
-                  >
+                  <div className="h-20 w-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
                     <CheckCircle2 className="w-10 h-10" />
-                  </motion.div>
+                  </div>
                   <h3 className="text-2xl font-bold text-gray-900">Thank You!</h3>
-                  <p className="text-gray-600">
-                    We have received your inquiry regarding
-                  </p>
                   <p className="font-semibold text-primary-500 text-lg">{pageContext}</p>
-                  <p className="text-sm text-gray-500">
-                    Our team will contact you within 24 hours.
-                  </p>
                 </motion.div>
               ) : (
-                // 📝 FORM STATE
                 <>
                   <div className="mb-6 pr-8">
                     <h3 className="text-2xl font-bold text-gray-900">Get a Quote</h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Regarding: <span className="text-primary-500 font-semibold">{pageContext}</span>
-                    </p>
+                    <p className="text-sm text-gray-600 mt-1">Regarding: <span className="text-primary-500 font-semibold">{pageContext}</span></p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Personal Info */}
                     <div>
-                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">
-                        Personal Details
-                      </h4>
+                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">Personal Details</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="firstName">First Name *</Label>
@@ -353,9 +317,7 @@ const EnquiryModal = ({
 
                     {/* Contact Info */}
                     <div>
-                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">
-                        Contact Info
-                      </h4>
+                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">Contact Info</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="email">Email *</Label>
@@ -380,7 +342,21 @@ const EnquiryModal = ({
                             className="border-gray-300 focus:border-primary-500"
                           />
                         </div>
-                        <div className="space-y-2 sm:col-span-2">
+
+                        {/* ✅ WHATSAPP FIELD IS HERE NOW */}
+                        <div className="space-y-2">
+                          <Label htmlFor="whatsappNo">WhatsApp No</Label>
+                          <Input 
+                            id="whatsappNo" 
+                            type="tel" 
+                            placeholder="+91..."
+                            value={formData.whatsappNo}
+                            onChange={(e) => setFormData(prev => ({...prev, whatsappNo: e.target.value}))}
+                            className="border-gray-300 focus:border-primary-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
                           <Label htmlFor="website">Website (Optional)</Label>
                           <Input 
                             id="website" 
@@ -394,11 +370,9 @@ const EnquiryModal = ({
                       </div>
                     </div>
 
-                    {/* Organization Info */}
+                    {/* Organization & Location Sections */}
                     <div>
-                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">
-                        Organization & Location
-                      </h4>
+                      <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider border-b pb-1">Organization & Location</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
                           <Label htmlFor="company">Organization Name</Label>
@@ -440,7 +414,6 @@ const EnquiryModal = ({
                         </div>
                       </div>
 
-                      {/* State/City */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="state">State</Label>
@@ -457,12 +430,7 @@ const EnquiryModal = ({
                             <option value="other">➕ Other</option>
                           </select>
                           {showCustomState && (
-                            <Input 
-                              placeholder="Enter State" 
-                              className="mt-2"
-                              value={customState}
-                              onChange={(e) => setCustomState(e.target.value)}
-                            />
+                            <Input placeholder="Enter State" className="mt-2" value={customState} onChange={(e) => setCustomState(e.target.value)} />
                           )}
                         </div>
 
@@ -476,11 +444,7 @@ const EnquiryModal = ({
                             disabled={!formData.state && !showCustomState}
                           >
                             <option value="">
-                              {!formData.state && !showCustomState 
-                                ? "Select State First" 
-                                : showCustomState 
-                                  ? "Enter City Below" 
-                                  : "Select City"}
+                              {!formData.state && !showCustomState ? "Select State First" : showCustomState ? "Enter City Below" : "Select City"}
                             </option>
                             {!showCustomState && availableCities.map((city) => (
                               <option key={city} value={city}>{city}</option>
@@ -490,31 +454,18 @@ const EnquiryModal = ({
                             )}
                           </select>
                           {(showCustomCity || showCustomState) && (
-                            <Input 
-                              placeholder="Enter City" 
-                              className="mt-2"
-                              value={customCity}
-                              onChange={(e) => setCustomCity(e.target.value)}
-                            />
+                            <Input placeholder="Enter City" className="mt-2" value={customCity} onChange={(e) => setCustomCity(e.target.value)} />
                           )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Submit Button */}
                     <button 
                       disabled={loading} 
                       type="submit" 
                       className="w-full bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white h-12 text-base mt-4 flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors"
                     >
-                      {loading ? (
-                        <>
-                          <Loader2 className="animate-spin h-5 w-5" />
-                          Submitting...
-                        </>
-                      ) : (
-                        'Submit Request'
-                      )}
+                      {loading ? (<><Loader2 className="animate-spin h-5 w-5" />Submitting...</>) : ('Submit Request')}
                     </button>
                   </form>
                 </>

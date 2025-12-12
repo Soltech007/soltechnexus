@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const ERP_CONFIG = {
-  url: "https://erp.soltechtechservices.com",
+  url: "https://erp.soltechtechservices.com", // No trailing slash
   apiKey: "8c21c94e1a2879b",
   apiSecret: "3caa5d67879d169",
 } as const;
@@ -33,7 +33,7 @@ function parseErrorMessage(data: any): string {
 async function ensureLeadSourceExists(sourceName: string) {
   if (!sourceName) return;
   try {
-    const response = await fetch(`${ERP_CONFIG.url}/api/resource/Lead Source`, {
+    await fetch(`${ERP_CONFIG.url}/api/resource/Lead Source`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,63 +41,82 @@ async function ensureLeadSourceExists(sourceName: string) {
       },
       body: JSON.stringify({ source_name: sourceName }),
     });
-    console.log("Source creation response:", response.status);
   } catch (error) {
-    console.log("Source check skipped:", error);
+    console.log("Source check skipped");
   }
 }
 
 export async function POST(req: NextRequest) {
-  console.log("🚀 API Route Called");
-  
   try {
     const body = await req.json();
-    console.log("📥 Received Body:", JSON.stringify(body, null, 2));
+    console.log("📥 Incoming Form Data:", JSON.stringify(body, null, 2));
 
-    // Validation
     if (!body.firstName || !body.email) {
-      console.log("❌ Validation Failed: Name/Email required");
       return NextResponse.json(
         { success: false, error: "Name and Email are required" }, 
         { status: 400 }
       );
     }
 
-    // Source (Page Name)
     const pageSource = body.source || body.servicePage || body.productPage || "Website";
-    console.log("📋 Page Source:", pageSource);
-
-    // Check/Create Source
     await ensureLeadSourceExists(pageSource);
 
-    // Prepare Payload
-    const payload = {
-      first_name: body.firstName || "",
+    // ✅ Detailed Notes String (Pipe Separated)
+    const detailedInfo = [
+      body.whatsappNo ? `WhatsApp No: ${body.whatsappNo}` : null,
+      body.website ? `Website: ${body.website}` : null,
+      body.noOfEmployees ? `Employees: ${body.noOfEmployees}` : null,
+      body.message ? `Message: ${body.message}` : null,
+      body.city ? `City: ${body.city}` : null,
+      body.state ? `State: ${body.state}` : null,
+    ].filter(Boolean).join(" | ");
+
+    // ✅ FIXED PAYLOAD (Same as previous successful fix)
+    const payload: Record<string, any> = {
+      // 1. Name
+      first_name: body.firstName,
       last_name: body.lastName || "",
       lead_name: `${body.firstName || ""} ${body.lastName || ""}`.trim(),
-      email_id: body.email || "",
-      company_name: body.company || "",
-      source: "Website",
-      custom_lead_interest: "SOLTECH Nexus",
-      industry: body.industry || "",
-      custom_redirect_form: pageSource,
-      lead_source_details: `
-Page: ${pageSource}
-Message: ${body.message || 'N/A'}
-Employees: ${body.noOfEmployees || 'N/A'}
-Website: ${body.website || 'N/A'}
-Location: ${body.city || 'N/A'}, ${body.state || 'N/A'}
-      `.trim(),
-      status: "Lead",
+      
+      // 2. Contact
+      email_id: body.email,
       mobile_no: body.phone || "",
+      
+      // ✅ Whatsapp No goes to 'phone' field to avoid Hook Error
+      // phone: body.whatsappNo || "",
+       whatsapp_no: body.whatsappNo || "",
+      
+      // 3. Website (Direct Field)
+      website: body.website || "",
+
+      // 4. Organization
+      company_name: body.company || "",
+      industry: body.industry || "",
+      no_of_employees: body.noOfEmployees || "",
+
+      // 5. Location
       city: body.city || "",
       state: body.state || "",
+
+      // 6. Source & Status
+      source: "Website",
+      status: "Lead",
+      custom_lead_interest: "SOLTECH Nexus", // Site Specific
+      custom_redirect_form: pageSource,
+
+      // 7. Notes (Backup of all info)
+      lead_source_details: detailedInfo,
+
+      // 8. Owner
       lead_owner: "lead@soltechnexus.com",
     };
 
-    console.log("📤 Sending to ERP:", JSON.stringify(payload, null, 2));
+    // Remove empty keys
+    Object.keys(payload).forEach((key) => {
+      if (!payload[key]) delete payload[key];
+    });
 
-    // Send to ERP
+
     const response = await fetch(`${ERP_CONFIG.url}/api/resource/Lead`, {
       method: "POST",
       headers: {
@@ -107,21 +126,18 @@ Location: ${body.city || 'N/A'}, ${body.state || 'N/A'}
       body: JSON.stringify(payload),
     });
 
-    console.log("📬 ERP Response Status:", response.status);
-
     const data = await response.json();
-    console.log("📬 ERP Response Data:", JSON.stringify(data, null, 2));
+
 
     if (!response.ok) {
       const errorMsg = parseErrorMessage(data);
-      console.error("❌ ERP Error:", errorMsg);
       return NextResponse.json(
         { success: false, error: errorMsg, details: data }, 
         { status: response.status }
       );
     }
 
-    console.log("✅ Lead Created Successfully!");
+ 
     return NextResponse.json(
       { 
         success: true, 
@@ -132,7 +148,6 @@ Location: ${body.city || 'N/A'}, ${body.state || 'N/A'}
     );
 
   } catch (error: any) {
-    console.error("❌ Server Error:", error);
     return NextResponse.json(
       { 
         success: false, 
@@ -144,7 +159,6 @@ Location: ${body.city || 'N/A'}, ${body.state || 'N/A'}
   }
 }
 
-// OPTIONS for CORS
 export async function OPTIONS(req: NextRequest) {
   return NextResponse.json({}, { status: 200 });
 }
