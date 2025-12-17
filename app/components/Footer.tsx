@@ -109,7 +109,7 @@ export default function Footer() {
     { href: "#", label: "Careers" },
     { href: "#", label: "Case Studies" },
     { href: "/blog", label: "Blog" },
-    { href: "#", label: "Become a Partner" },
+    { href: "/partner", label: "Become a Partner" },
   ];
 
   const resourceLinks = [
