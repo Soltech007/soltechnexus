@@ -32,6 +32,7 @@ import {
   Network,
   Server,
   Cloud,
+  Share2,
 } from "lucide-react";
 
 // ✅ Industries List (Updated for IT Infrastructure)
@@ -114,14 +115,14 @@ const channelPartnerBenefits = [
   },
 ];
 
-const salesPartnerBenefits = [
+const referralPartnerBenefits = [
   {
     icon: <IndianRupee className="w-5 h-5" />,
     title: "Attractive Commission",
-    desc: "Earn on every successful deal",
+    desc: "Earn on every successful referral",
   },
   {
-    icon: <Target className="w-5 h-5" />,
+    icon: <Share2 className="w-5 h-5" />,
     title: "No Investment",
     desc: "Start with zero investment",
   },
@@ -156,10 +157,10 @@ const partnerTypes = [
     textColor: "text-blue-600",
   },
   {
-    id: "sales",
-    title: "Sales Partner",
-    icon: <Target className="w-8 h-8" />,
-    description: "We generate invoices, you earn commission per deal",
+    id: "referral",
+    title: "Referral Partner",
+    icon: <Share2 className="w-8 h-8" />,
+    description: "we generate invoices & you earn commission",
     features: [
       "SOLTECH Nexus generates all invoices",
       "Commission paid as per partner policy",
@@ -181,7 +182,7 @@ const selectClassName =
 
 export default function ChannelPartnerPage() {
   const [selectedPartnerType, setSelectedPartnerType] = useState<
-    "channel" | "sales" | null
+    "channel" | "referral" | null
   >(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -342,9 +343,9 @@ export default function ChannelPartnerPage() {
         partnerCategory:
           selectedPartnerType === "channel"
             ? "Channel Partner"
-            : "Sales Partner",
-        source: `SOLTECH Nexus - ${
-          selectedPartnerType === "channel" ? "Channel" : "Sales"
+            : "Referral Partner",
+        source: ` ${
+          selectedPartnerType === "channel" ? "Channel" : "Referral"
         } Partner Application`,
       };
 
@@ -382,8 +383,8 @@ export default function ChannelPartnerPage() {
   };
 
   const currentBenefits =
-    selectedPartnerType === "sales"
-      ? salesPartnerBenefits
+    selectedPartnerType === "referral"
+      ? referralPartnerBenefits
       : channelPartnerBenefits;
 
   return (
@@ -436,7 +437,7 @@ export default function ChannelPartnerPage() {
                   >
                     <div
                       className={`w-10 h-10 rounded-xl ${
-                        selectedPartnerType === "sales"
+                        selectedPartnerType === "referral"
                           ? "bg-green-500/10 text-green-600"
                           : "bg-primary/10 text-primary"
                       } flex items-center justify-center mx-auto mb-3`}
@@ -484,7 +485,7 @@ export default function ChannelPartnerPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 + index * 0.1 }}
                     onClick={() =>
-                      setSelectedPartnerType(type.id as "channel" | "sales")
+                      setSelectedPartnerType(type.id as "channel" | "referral")
                     }
                     className="relative cursor-pointer group"
                   >
@@ -595,7 +596,7 @@ export default function ChannelPartnerPage() {
                             </>
                           ) : (
                             <>
-                              <Target className="w-3.5 h-3.5" /> Sales Partner
+                              <Share2 className="w-3.5 h-3.5" /> Referral Partner
                             </>
                           )}
                         </span>
@@ -677,13 +678,13 @@ export default function ChannelPartnerPage() {
                           {selectedPartnerType === "channel" ? (
                             <Building2 className="w-5 h-5" />
                           ) : (
-                            <Target className="w-5 h-5" />
+                            <Share2 className="w-5 h-5" />
                           )}
                         </div>
                         <h3 className="text-xl md:text-2xl font-bold text-slate-900">
                           {selectedPartnerType === "channel"
                             ? "Channel Partner Registration"
-                            : "Sales Partner Registration"}
+                            : "Referral Partner Registration"}
                         </h3>
                       </div>
                       <p className="text-sm text-slate-500">
@@ -810,7 +811,7 @@ export default function ChannelPartnerPage() {
                               <Input
                                 id="companyName"
                                 placeholder={
-                                  selectedPartnerType === "sales"
+                                  selectedPartnerType === "referral"
                                     ? "Optional"
                                     : "Acme Pvt Ltd"
                                 }
@@ -1017,7 +1018,7 @@ export default function ChannelPartnerPage() {
                       <Button
                         type="submit"
                         className={`w-full h-14 text-base font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all ${
-                          selectedPartnerType === "sales"
+                          selectedPartnerType === "referral"
                             ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                             : ""
                         }`}
@@ -1033,12 +1034,12 @@ export default function ChannelPartnerPage() {
                             {selectedPartnerType === "channel" ? (
                               <Building2 className="w-5 h-5 mr-2" />
                             ) : (
-                              <Target className="w-5 h-5 mr-2" />
+                              <Share2 className="w-5 h-5 mr-2" />
                             )}
                             Apply as{" "}
                             {selectedPartnerType === "channel"
                               ? "Channel"
-                              : "Sales"}{" "}
+                              : "Referral"}{" "}
                             Partner
                           </>
                         )}
@@ -1092,7 +1093,7 @@ export default function ChannelPartnerPage() {
 
               <p className="text-lg text-slate-600 mb-2">
                 Your{" "}
-                {selectedPartnerType === "channel" ? "Channel" : "Sales"} Partner
+                {selectedPartnerType === "channel" ? "Channel" : "Referral"} Partner
                 application has been submitted!
               </p>
 
