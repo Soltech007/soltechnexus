@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
       lead_name: `${body.firstName || ""} ${body.lastName || ""}`.trim(),
       email_id: body.email || "",
       mobile_no: body.phone || "",
-      whatsapp_no: body.whatsappNo || "",
+      // whatsapp_no: body.whatsappNo || "",
       website: body.website || "",
       company_name: body.company || "",
       industry: body.industry || "",
@@ -152,8 +152,8 @@ export async function POST(req: NextRequest) {
         data = { raw: responseText };
       }
 
-      console.log("📨 ERP Response Status:", response.status);
-      console.log("📨 ERP Response Data:", JSON.stringify(data, null, 2));
+      // console.log("📨 ERP Response Status:", response.status);
+      // console.log("📨 ERP Response Data:", JSON.stringify(data, null, 2));
 
     } catch (fetchError: any) {
       console.error("❌ Fetch Error:", fetchError.message);

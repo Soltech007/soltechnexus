@@ -10,12 +10,49 @@ import {
   Sparkles,
   Building,
   User,
-  MessageSquare,
   Loader2,
+  CheckCircle2,
+  Globe,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { ReactNode } from "react";
+
+// ✅ States and Cities Data
+const statesAndCities: { [key: string]: string[] } = {
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati"],
+  "Delhi": ["New Delhi", "South Delhi", "North Delhi", "East Delhi"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Vapi", "Bharuch"],
+  "Karnataka": ["Bengaluru", "Mysuru", "Hubli", "Mangalore"],
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Ghaziabad", "Varanasi"],
+  "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri"],
+  "Rajasthan": ["Jaipur", "Udaipur", "Jodhpur", "Kota"],
+  "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur"],
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode"],
+  "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar"],
+  "Haryana": ["Gurgaon", "Faridabad", "Panipat", "Ambala"],
+  "Bihar": ["Patna", "Gaya", "Muzaffarpur"],
+  "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela"],
+};
+
+const statesList = Object.keys(statesAndCities).sort();
+
+// ✅ Country List
+const countries = [
+  "India",
+  "United States",
+  "United Kingdom",
+  "Canada",
+  "Australia",
+  "Germany",
+  "France",
+  "UAE",
+  "Singapore",
+  "Other",
+];
 
 interface InfoCardProps {
   icon: ReactNode;
@@ -50,8 +87,6 @@ const InfoCard = ({ icon, title, content, href }: InfoCardProps) => {
   return <CardContent />;
 };
 
-
-
 // --- Reusable FAQ Item Component ---
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,34 +119,197 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 // --- MAIN CONTACT PAGE COMPONENT ---
 export default function ContactPage() {
-  const [loading, setLoading] = useState(false);
+  // ✅ Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    country: "India",
+    state: "",
+    city: "",
+  });
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  // ✅ Custom Location States
+  const [showCustomState, setShowCustomState] = useState(false);
+  const [showCustomCity, setShowCustomCity] = useState(false);
+  const [customState, setCustomState] = useState("");
+  const [customCity, setCustomCity] = useState("");
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
+
+  // ✅ Handle State Change - Update Cities
+  useEffect(() => {
+    if (formData.state && formData.state !== "other" && statesAndCities[formData.state]) {
+      setAvailableCities(statesAndCities[formData.state]);
+      setShowCustomCity(false);
+      setFormData((prev) => ({ ...prev, city: "" }));
+    } else if (formData.state === "other") {
+      setAvailableCities([]);
+      setShowCustomCity(true);
+    } else {
+      setAvailableCities([]);
+    }
+  }, [formData.state]);
+
+  // ✅ Handle Input Change
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // ✅ Handle State Selection
+  const handleStateChange = (value: string) => {
+    if (value === "other") {
+      setShowCustomState(true);
+      setFormData((prev) => ({ ...prev, state: "other", city: "" }));
+    } else {
+      setShowCustomState(false);
+      setCustomState("");
+      setFormData((prev) => ({ ...prev, state: value, city: "" }));
+    }
+  };
+
+  // ✅ Handle City Selection
+  const handleCityChange = (value: string) => {
+    if (value === "other") {
+      setShowCustomCity(true);
+      setFormData((prev) => ({ ...prev, city: "other" }));
+    } else {
+      setShowCustomCity(false);
+      setCustomCity("");
+      setFormData((prev) => ({ ...prev, city: value }));
+    }
+  };
+
+  // ✅ Handle Form Submit - Connected to ERP
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      toast.success("Message Sent Successfully! 🎉", {
-        duration: 4000,
+    // Validation
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast.error("Please fill all required fields", {
+        duration: 3000,
         position: "top-center",
         style: {
-          background: "#10B981",
+          background: "#EF4444",
           color: "#fff",
           fontWeight: "500",
           padding: "16px 24px",
           borderRadius: "12px",
         },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#10B981",
-        },
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Split name into first and last name
+      const nameParts = formData.name.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      // ✅ Get final state and city values
+      const finalState = showCustomState ? customState : formData.state;
+      const finalCity = showCustomCity ? customCity : formData.city;
+
+      // ✅ Prepare API Payload
+      const payload = {
+        firstName: firstName,
+        lastName: lastName,
+        email: formData.email,
+        phone: formData.phone,
+        whatsappNo: formData.phone,
+        company: formData.company,
+        country: formData.country,
+        state: finalState,
+        city: finalCity,
+        source: "Contact Page",
+        // Empty fields
+        message: "",
+        website: "",
+        industry: "",
+        noOfEmployees: "",
+      };
+
+      // ✅ Send to API
+      const response = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      // Reset form
-      (e.target as HTMLFormElement).reset();
-    }, 1500);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSuccess(true);
+        toast.success("Message Sent Successfully! 🎉", {
+          duration: 4000,
+          position: "top-center",
+          style: {
+            background: "#10B981",
+            color: "#fff",
+            fontWeight: "500",
+            padding: "16px 24px",
+            borderRadius: "12px",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#10B981",
+          },
+        });
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setSuccess(false);
+          setFormData({
+            name: "",
+            company: "",
+            email: "",
+            phone: "",
+            country: "India",
+            state: "",
+            city: "",
+          });
+          setShowCustomState(false);
+          setShowCustomCity(false);
+          setCustomState("");
+          setCustomCity("");
+        }, 3000);
+      } else {
+        toast.error(data.error || "Something went wrong. Please try again.", {
+          duration: 4000,
+          position: "top-center",
+          style: {
+            background: "#EF4444",
+            color: "#fff",
+            fontWeight: "500",
+            padding: "16px 24px",
+            borderRadius: "12px",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Submit Error:", error);
+      toast.error("Failed to send message. Please try again.", {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          background: "#EF4444",
+          color: "#fff",
+          fontWeight: "500",
+          padding: "16px 24px",
+          borderRadius: "12px",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const faqs = [
@@ -136,6 +334,13 @@ export default function ContactPage() {
         "Our head office is located in Surat, Gujarat. You can find the full address and a map on this page. We serve clients across India and internationally.",
     },
   ];
+
+  // Common input class
+  const inputClass =
+    "block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50";
+
+  const selectClass =
+    "block w-full px-4 py-3 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50";
 
   return (
     <div className="w-full bg-white">
@@ -185,136 +390,259 @@ export default function ContactPage() {
               transition={{ duration: 0.7 }}
               className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100"
             >
-              <h2 className="h2 mb-4">Send Us a Message</h2>
-              <p className="p-base text-gray-600 mb-8">
-                Our team will get back to you within one business day.
-              </p>
+              {/* ✅ Success State */}
+              {success ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-16 text-center space-y-4"
+                >
+                  <div className="h-20 w-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                    <CheckCircle2 className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Thank You!</h3>
+                  <p className="text-gray-600 max-w-sm">
+                    We have received your details. Our team will get back to you within 24 hours.
+                  </p>
+                </motion.div>
+              ) : (
+                <>
+                  <h2 className="h2 mb-4">Send Us a Message</h2>
+                  <p className="p-base text-gray-600 mb-8">
+                    Our team will get back to you within one business day.
+                  </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Full Name
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        disabled={loading}
-                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
-                        placeholder="Your Name"
-                      />
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Name & Company */}
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Full Name *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            disabled={loading}
+                            className={inputClass}
+                            placeholder="Your Name"
+                          />
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="company"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Company
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            disabled={loading}
+                            className={inputClass}
+                            placeholder="Your Company Name"
+                          />
+                          <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="company"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Company
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        disabled={loading}
-                        className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
-                        placeholder="Your Company Name"
-                      />
-                      <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+
+                    {/* Email & Phone */}
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Email Address *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            disabled={loading}
+                            className={inputClass}
+                            placeholder="you@company.com"
+                          />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="phone"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          Phone Number *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            required
+                            disabled={loading}
+                            className={inputClass}
+                            placeholder="+91 90235 06084"
+                          />
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      disabled={loading}
-                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
-                      placeholder="you@company.com"
-                    />
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  </div>
-                </div>
+                    {/* ✅ Country */}
+                    <div>
+                      <label
+                        htmlFor="country"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Country *
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          required
+                          disabled={loading}
+                          className={`${selectClass} pl-10`}
+                        >
+                          {countries.map((country) => (
+                            <option key={country} value={country}>
+                              {country}
+                            </option>
+                          ))}
+                        </select>
+                        <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      </div>
+                    </div>
 
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      disabled={loading}
-                      className="block w-full px-4 py-3 pl-10 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
-                      placeholder="+91 90235 06084"
-                    />
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  </div>
-                </div>
+                    {/* ✅ State & City */}
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      {/* State */}
+                      <div>
+                        <label
+                          htmlFor="state"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          State
+                        </label>
+                        <select
+                          id="state"
+                          name="state"
+                          value={showCustomState ? "other" : formData.state}
+                          onChange={(e) => handleStateChange(e.target.value)}
+                          disabled={loading}
+                          className={selectClass}
+                        >
+                          <option value="">Select State</option>
+                          {statesList.map((state) => (
+                            <option key={state} value={state}>
+                              {state}
+                            </option>
+                          ))}
+                          <option value="other">➕ Other</option>
+                        </select>
+                        {showCustomState && (
+                          <input
+                            type="text"
+                            placeholder="Enter State"
+                            value={customState}
+                            onChange={(e) => setCustomState(e.target.value)}
+                            disabled={loading}
+                            className={`${selectClass} mt-2`}
+                          />
+                        )}
+                      </div>
 
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Message
-                  </label>
-                  <div className="relative">
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      required
-                      disabled={loading}
-                      className="block w-full px-4 py-3 pl-10 pt-3 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50"
-                      placeholder="Tell us about your project..."
-                    ></textarea>
-                    <MessageSquare className="absolute left-3 top-4 w-5 h-5 text-gray-400" />
-                  </div>
-                </div>
+                      {/* City */}
+                      <div>
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                          City
+                        </label>
+                        <select
+                          id="city"
+                          name="city"
+                          value={showCustomCity && !showCustomState ? "other" : formData.city}
+                          onChange={(e) => handleCityChange(e.target.value)}
+                          disabled={loading || (!formData.state && !showCustomState)}
+                          className={selectClass}
+                        >
+                          <option value="">
+                            {!formData.state && !showCustomState
+                              ? "Select State First"
+                              : showCustomState
+                              ? "Enter City Below"
+                              : "Select City"}
+                          </option>
+                          {!showCustomState &&
+                            availableCities.map((city) => (
+                              <option key={city} value={city}>
+                                {city}
+                              </option>
+                            ))}
+                          {!showCustomState && formData.state && (
+                            <option value="other">➕ Other</option>
+                          )}
+                        </select>
+                        {(showCustomCity || showCustomState) && (
+                          <input
+                            type="text"
+                            placeholder="Enter City"
+                            value={customCity}
+                            onChange={(e) => setCustomCity(e.target.value)}
+                            disabled={loading}
+                            className={`${selectClass} mt-2`}
+                          />
+                        )}
+                      </div>
+                    </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="btn-primary w-full text-center flex items-center justify-center disabled:opacity-50"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        Send Message
-                        <Send className="w-5 h-5 ml-2" />
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
+                    {/* Submit Button */}
+                    <div>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn-primary w-full text-center flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {loading ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send Message
+                            <Send className="w-5 h-5 ml-2" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
             </motion.div>
 
             {/* Contact Info */}
@@ -336,19 +664,18 @@ export default function ContactPage() {
                 icon={<Phone />}
                 title="Call Us"
                 content="+91 90235 06084"
-                href="tel:+91 90235 06084"
+                href="tel:+919023506084"
               />
               <InfoCard
-  icon={<MapPin />}
-  title="Our Office"
-  content={
-    <>
-      Vibrant Park, Survey No. 182 Near NH 8,<br />
-      GIDC Phase 1, Vapi, Gujarat - 396195, India
-    </>
-  }
-/>
-
+                icon={<MapPin />}
+                title="Our Office"
+                content={
+                  <>
+                    Vibrant Park, Survey No. 182 Near NH 8,<br />
+                    GIDC Phase 1, Vapi, Gujarat - 396195, India
+                  </>
+                }
+              />
             </motion.div>
           </div>
         </div>
