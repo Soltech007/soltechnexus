@@ -1,4 +1,3 @@
-// app/api/newsletter/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -9,70 +8,52 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    // Validate email format
+    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
-    const API_KEY = process.env.BREVO_API_KEY;
-    const LIST_ID = Number(process.env.BREVO_LIST_ID);
+    const baseUrl = process.env.MAUTIC_BASE_URL;
+    const username = process.env.MAUTIC_USERNAME;
+    const password = process.env.MAUTIC_PASSWORD;
 
-    if (!API_KEY) {
-      console.error("🚨 BREVO_API_KEY is missing!");
-      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
-    }
-
-    if (!LIST_ID) {
-      console.error("🚨 BREVO_LIST_ID is missing!");
-      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
-    }
-
-    const payload = {
-      email,
-      listIds: [LIST_ID],
-      updateEnabled: true,
-    };
-
-    const response = await fetch("https://api.brevo.com/v3/contacts", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "api-key": API_KEY.trim(),
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const text = await response.text();
-    console.log("📩 Brevo Response:", response.status, text);
-
-    // Success cases
-    if (response.status === 201 || response.status === 204) {
+    if (!baseUrl || !username || !password) {
+      console.error("🚨 Mautic env vars missing");
       return NextResponse.json(
-        { message: "Subscribed successfully! 🎉" },
-        { status: 200 }
+        { error: "Server configuration error" },
+        { status: 500 }
       );
     }
 
-    // Handle duplicate contact (already exists)
-    if (response.status === 400) {
-      try {
-        const errorData = JSON.parse(text);
-        if (errorData.code === "duplicate_parameter" || text.includes("Contact already exist")) {
-          return NextResponse.json(
-            { error: "You're already subscribed! 📧" },
-            { status: 409 } // Conflict status
-          );
-        }
-      } catch {
-        // If parsing fails, continue to generic error
-      }
+    const authHeader =
+      "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
+
+    const response = await fetch(`${baseUrl}/api/contacts/new`, {
+      method: "POST",
+      headers: {
+        Authorization: authHeader,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email.trim(),
+        tags: ["Soltech_nexus_subscriber_button"],
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("🚨 Mautic Error:", data);
+      return NextResponse.json(
+        { error: "Failed to subscribe. Please try again." },
+        { status: response.status }
+      );
     }
 
     return NextResponse.json(
-      { error: "Failed to subscribe. Please try again." },
-      { status: response.status }
+      { message: "Subscribed successfully! 🎉" },
+      { status: 200 }
     );
   } catch (error) {
     console.error("🔥 Newsletter Error:", error);
